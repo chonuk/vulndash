@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar');;
+Route::resource('vulnerabilidades','VulnerabilidadController');
