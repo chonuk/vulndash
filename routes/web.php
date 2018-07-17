@@ -17,3 +17,5 @@ Route::get('/', function () {
 Route::get('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar');
 Route::post('vulnerabilidades/import', 'VulnerabilidadController@import')->name('vulnerabilidades.import');
 Route::resource('vulnerabilidades','VulnerabilidadController');
+
+Route::resource('plataformas','PlataformaController');

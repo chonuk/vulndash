@@ -14,9 +14,19 @@ class CreateCriticidadTable extends Migration
     public function up()
     {
         Schema::create('criticidades', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
             $table->string('texto');
+            $table->string('color');
         });
+
+        DB::table('criticidades')->insert(
+            array(
+                ['id' => '1','texto' => 'Baja','color' => 'default'],
+                ['id' => '2','texto' => 'Media','color' => 'primary'],
+                ['id' => '3','texto' => 'Alta','color' => 'warning'],
+                ['id' => '4','texto' => 'Crítica','color' => 'danger'],
+            )
+        );
     }
 
     /**

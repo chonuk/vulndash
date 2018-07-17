@@ -16,7 +16,8 @@ class CreatePlataformasTable extends Migration
         Schema::create('plataformas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string('tipo'); // Web - Infraestructura
+            $table->string('tipo'); // Web / Infraestructura
+            $table->string('responsable')->nullable();
             $table->timestamps();
         });
     }

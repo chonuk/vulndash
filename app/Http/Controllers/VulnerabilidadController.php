@@ -121,7 +121,7 @@ class VulnerabilidadController extends Controller
         $vulnerabilidad->delete();
 
         return redirect()->route('vulnerabilidades.index')
-                        ->with('success','Vulnerabilidad eliminada');
+                        ->with('success','Vulnerabilidad '. $vulnerabilidad->titulo .' eliminada');
     }
 
     public function importar()
@@ -151,12 +151,12 @@ class VulnerabilidadController extends Controller
 
                 //Busco por idSerpico
                 $vuln = Vulnerabilidad::where('id_serpico',$vulnerabilidad->id)->first();
-                $vulnerabilidad->overview = str_replace('<paragraph>','',$vulnerabilidad->overview);
-                $vulnerabilidad->overview = str_replace('</paragraph>', '',$vulnerabilidad->overview);
-                $vulnerabilidad->remediation = str_replace('<paragraph>','',$vulnerabilidad->remediation);
-                $vulnerabilidad->remediation = str_replace('</paragraph>', '' ,$vulnerabilidad->remediation);
-                $vulnerabilidad->references = str_replace('<paragraph>','',$vulnerabilidad->references);
-                $vulnerabilidad->references = str_replace('</paragraph>', '' ,$vulnerabilidad->references);
+                $vulnerabilidad->overview = str_replace('</paragraph>',"\r\n",$vulnerabilidad->overview);
+                $vulnerabilidad->overview = str_replace('<paragraph>', '',$vulnerabilidad->overview);
+                $vulnerabilidad->remediation = str_replace('</paragraph>',"\r\n",$vulnerabilidad->remediation);
+                $vulnerabilidad->remediation = str_replace('<paragraph>', '' ,$vulnerabilidad->remediation);
+                $vulnerabilidad->references = str_replace('</paragraph>',"\r\n",$vulnerabilidad->references);
+                $vulnerabilidad->references = str_replace('<paragraph>', '' ,$vulnerabilidad->references);
                 
                 //Si no existe Creo el objeto y lo persisto
                 if (!$vuln) {

@@ -7,7 +7,7 @@
                 <h2> Importar Vulnerabilidades</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default" href="{{ route('vulnerabilidades.index') }}"> Volver</a>
+                <a class="btn btn-sm btn-default" href="{{ route('vulnerabilidades.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
             </div>
         </div>
         <div class="col-lg-10">

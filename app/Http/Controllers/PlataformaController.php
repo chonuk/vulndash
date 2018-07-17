@@ -12,9 +12,22 @@ class PlataformaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+  public function index(Request $request)
     {
-        //
+        $sort = $request->input('sort'); 
+        $order = $request->input('order');
+
+        if($sort && $order) 
+        {
+            $plataformas = Plataforma::sortable()->orderBy($sort, $order)->paginate(10);
+            $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
+        }else{
+            $plataformas = Plataforma::orderBy('nombre','asc')->sortable()->paginate(10);
+            $links = $plataformas->links();
+        }
+
+        return view('plataformas.index',compact('plataformas','links','sort','order'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -24,7 +37,7 @@ class PlataformaController extends Controller
      */
     public function create()
     {
-        //
+        return view('plataformas.create');
     }
 
     /**
@@ -35,7 +48,15 @@ class PlataformaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'tipo' => 'required',
+        ]);
+
+        Plataforma::create($request->all());
+
+        return redirect()->route('plataformas.index')
+                        ->with('success','Plataforma creada correctamente');
     }
 
     /**
@@ -55,21 +76,30 @@ class PlataformaController extends Controller
      * @param  \App\Plataforma  $plataforma
      * @return \Illuminate\Http\Response
      */
-    public function edit(Plataforma $plataforma)
-    {
-        //
+    public function edit($id)
+    {   
+        return view('plataformas.edit', ['plataforma' => Plataforma::findOrFail($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Plataforma  $plataforma
+     * @param  \App\Vulnerabilidad  $vulnerabilidad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Plataforma $plataforma)
+    public function update(Request $request, $id)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'tipo' => 'required',
+        ]);
+        $plataforma = Plataforma::findOrFail($id);
+        $plataforma->update($request->all());
+
+
+        return redirect()->route('plataformas.index')
+                        ->with('success','Plataforma actualizada');
     }
 
     /**
@@ -78,8 +108,12 @@ class PlataformaController extends Controller
      * @param  \App\Plataforma  $plataforma
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Plataforma $plataforma)
+    public function destroy($id)
     {
-        //
+        $plataforma = Plataforma::findOrFail($id);
+        $plataforma->delete();
+
+        return redirect()->route('plataformas.index')
+                        ->with('success','Plataforma '. $plataforma->nombre .' eliminada');
     }
 }

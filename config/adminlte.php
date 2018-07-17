@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'Dashboard Vulnerabilidades',
+    'title' => 'Dashboard Segumiento Vulnerabilidades',
 
     'title_prefix' => '',
 
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'black',
+    'skin' => 'blue',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'dashboard_url' => 'vulnerabilidades',
+    'dashboard_url' => '/',
 
     'logout_url' => 'vulnerabilidades/logout',
 
@@ -135,7 +135,7 @@ return [
         [
             'text'       => 'Baja',
             'url'   =>  '#',
-            'icon_color' => 'cyan',
+            'icon_color' => 'gray',
         ],
         'ADMINISTRACION',
         [
@@ -149,7 +149,7 @@ return [
                 [
                     'text'    => 'Listar',
                     'url'     => 'vulnerabilidades',
-                    'active' => ['vulnerabilidades'],
+                    'active' => ['vulnerabilidades', 'vulnerabilidades?*'],
                 ],
                 [
                     'text'  =>  'Importar',
@@ -159,7 +159,7 @@ return [
         ],
         [
             'text'  =>  'Plataformas',
-            'icon'  =>  'hdd',
+            'icon'  =>  'cloud',
             'submenu' => [
                 [
                     'text' => 'Crear',
@@ -167,10 +167,25 @@ return [
                 ],
                 [
                     'text'    => 'Listar',
-                    'url'     => 'Plataformas',
+                    'url'     => 'plataformas',
+                    'active' => ['plataformas', 'plataformas?*'],
                 ],
             ],                
         ],
+        [
+            'text'  =>  'Activos',
+            'icon'  =>  'sitemap',
+            'submenu' => [
+                [
+                    'text' => 'Crear',
+                    'url'  => 'activos/create',
+                ],
+                [
+                    'text'    => 'Listar',
+                    'url'     => 'activos',
+                ],
+            ],                
+        ],        
     ],
     
 
