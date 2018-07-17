@@ -1,15 +1,11 @@
-@extends('layout')
-
+@extends('adminlte::page')
 
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Vulnerabilidades - Gestion</h2>
-            </div>
             <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('vulnerabilidades.create') }}"> Crear Vulnerabilidad</a>
-                <a class="btn btn-default" href="{{ route('vulnerabilidades.importar') }}"> Importar Vulnerabilidades</a>
+                <a class="btn btn-sm btn-success" href="{{ route('vulnerabilidades.create') }}"> Agregar Vulnerabilidad</a>&nbsp;
+                <a class="btn btn-sm btn-info" href="{{ route('vulnerabilidades.importar') }}"> Importar Vulnerabilidades</a>
             </div>
         </div>
     </div>
@@ -22,16 +18,16 @@
     @endif
 
 
-    <table class="table table-bordered">
+    <table class="table table-condensed table-hovered table-bordered" id="vulnerabilidades">
         <tr>
-            <th>Nro</th>
-            <th>Titulo</th>
-            <th>Criticidad</th>
-            <th width="280px">Action</th>
+            <th>@sortablelink('id')</th>
+            <th>@sortablelink('titulo', 'Vulnerabilidad')</th>
+            <th>@sortablelink('criticidad_id', 'criticidad')</th>
+            <th width="280px">Accion</th>
         </tr>
         @foreach ($vulnerabilidades as $vulnerabilidad)
         <tr>
-            <td>{{ ++$i }}</td>
+            <td>{{ $vulnerabilidad->id }}</td>
             <td>{{ $vulnerabilidad->titulo }}</td>
             <td>{{ $vulnerabilidad->criticidad->texto }}</td>
             <td>
@@ -47,11 +43,12 @@
         @endforeach
     </table>
 
-    {!! $vulnerabilidades->links() !!}
+    {!! $links !!}
 
 
 @endsection
 @section('js')
+<script>
   function ConfirmDelete()
   {
   var x = confirm("¿Seguro que desea eliminar el registro?");
@@ -60,4 +57,5 @@
   else
     return false;
   }
+</script>
 @endsection

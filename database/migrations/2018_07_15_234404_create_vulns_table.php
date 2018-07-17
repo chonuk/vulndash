@@ -20,6 +20,7 @@ class CreateVulnsTable extends Migration
             $table->string('descripcion');
             $table->string('remediacion')->nullable();
             $table->string('referencias')->nullable();
+            $table->integer('id_serpico')->nullable();
             $table->timestamps();
         });
     }
