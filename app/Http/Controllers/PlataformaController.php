@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Plataforma;
+use App\TipoPlataforma;
 use Illuminate\Http\Request;
 
 class PlataformaController extends Controller
@@ -19,10 +20,10 @@ class PlataformaController extends Controller
 
         if($sort && $order) 
         {
-            $plataformas = Plataforma::sortable()->orderBy($sort, $order)->paginate(10);
+            $plataformas = Plataforma::withCount('activos')->sortable()->orderBy($sort, $order)->paginate(10);
             $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
         }else{
-            $plataformas = Plataforma::orderBy('nombre','asc')->sortable()->paginate(10);
+            $plataformas = Plataforma::withCount('activos')->orderBy('vulnerabilidades','desc')->sortable()->paginate(10);
             $links = $plataformas->links();
         }
 
@@ -49,8 +50,7 @@ class PlataformaController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'nombre' => 'required',
-            'tipo' => 'required',
+            'nombre' => 'required|unique:plataformas,nombre',
         ]);
 
         Plataforma::create($request->all());
@@ -67,7 +67,7 @@ class PlataformaController extends Controller
      */
     public function show(Plataforma $plataforma)
     {
-        //
+        // Ver Detalle de la plataforma con sus activos
     }
 
     /**
@@ -76,9 +76,24 @@ class PlataformaController extends Controller
      * @param  \App\Plataforma  $plataforma
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {   
-        return view('plataformas.edit', ['plataforma' => Plataforma::findOrFail($id)]);
+        $plataforma = Plataforma::find($id);
+
+        $sort = $request->input('sort'); 
+        $order = $request->input('order');
+        
+        if($sort && $order) 
+        {
+            $activos = $plataforma->activos()->sortable()->orderBy($sort, $order)->paginate(7);
+            $links = $activos->appends(['sort' => $sort, 'order' => $order])->links();
+        }else{
+            $activos = $plataforma->activos()->orderBy('ip','asc')->sortable()->paginate(7);
+            $links = $activos->links();
+        }
+
+        return view('plataformas.edit', compact('plataforma','activos','links','sort','order'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -91,12 +106,10 @@ class PlataformaController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'nombre' => 'required',
-            'tipo' => 'required',
+            'nombre' => 'required|unique:plataformas,nombre,'.$id,
         ]);
         $plataforma = Plataforma::findOrFail($id);
         $plataforma->update($request->all());
-
 
         return redirect()->route('plataformas.index')
                         ->with('success','Plataforma actualizada');
@@ -111,9 +124,77 @@ class PlataformaController extends Controller
     public function destroy($id)
     {
         $plataforma = Plataforma::findOrFail($id);
+        $plataforma->activos()->detach();
         $plataforma->delete();
 
         return redirect()->route('plataformas.index')
                         ->with('success','Plataforma '. $plataforma->nombre .' eliminada');
+    }
+
+    public function import()
+    {
+        return view('plataformas.import');
+    }
+
+    public function importar(Request $request){
+        if($request->hasFile('fileToUpload')){
+            $cant = 0;
+            $errDuplicado = 0;
+            $path = $request->file('fileToUpload')->getRealPath();
+            $data = \Excel::load($path)->get();
+
+            if($data->count()){
+                foreach ($data as $key => $value) {
+                    //Busco plataforma existente
+                    $plataforma = Plataforma::where('nombre',$value->nombre)->first();
+                    if (!$plataforma) {
+                        $cant++;
+                        $arr[] = [
+                            'nombre' => $value->nombre, 
+                            'responsable' => $value->responsable
+                        ];
+                    }
+                    else
+                    {
+                        $errDuplicado++;
+                    }
+                }
+            }
+            try
+            {
+                if(!empty($arr)){
+                   \DB::table('plataformas')->insert($arr);
+                }
+            }
+            catch(\Illuminate\Database\QueryException $e)
+            {
+                return redirect()->route('plataformas.index')
+                            ->with('error', 'Plataformas duplicadas en el archivo a subir, por favor validar.');
+            }
+            $array_msg=[];
+            if($cant >0)
+            {
+                $array_msg += ['success' => '<strong>'.$cant.' plataformas importadas correctamente</strong>'];
+            }
+            if(($errDuplicado)>0)
+            {
+                $array_msg += ['error' => '<p><strong>Plataformas NO importadas</strong></p> <p>Plataformas Duplicadas: '.$errDuplicado.'</p>'];
+            }
+            return redirect()->route('plataformas.index')
+                ->with($array_msg);
+        }
+        else
+        {
+            return redirect()->route('plataformas.index')
+                ->with('error','Error al subir el archivo');
+        }
+    } 
+
+    public function detach($id, Request $request)
+    {
+        $plataforma = Plataforma::find($id);
+
+        $plataforma->activos()->detach($request->input('activo_id'));
+        return redirect()->route('plataformas.edit', $plataforma)->with('success', 'Se elimino el activo');
     }
 }

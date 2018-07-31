@@ -4,10 +4,10 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Crear Vulnerabilidad</h2>
+                <h2>Crear Vulnerabilidad Serpico</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default" href="{{ route('vulnerabilidades.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+                <a class="btn btn-sm btn-default" href="{{ route('vulnsserpico.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
     @endif
 
 
-    <form class="form-horizontal" action="{{ route('vulnerabilidades.store') }}" method="POST">
+    <form class="form-horizontal" action="{{ route('vulnsserpico.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="titulo" class="col-lg-2 col-lg-offset-2" control-label">Nombre</label>

@@ -34,15 +34,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="tipo" class="col-lg-2 col-lg-offset-2" control-label">Tipo</label>
-            <div class="col-lg-6">
-                <select name="tipo" id="tipo">
-                        <option value="Web">Web</option>
-                        <option value="Infraestructura">Infraestructura</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
             <label for="responsable" class="col-lg-2 col-lg-offset-2" control-label">Responsable</label>
             <div class="col-lg-6">
                 <input type="text" id="responsable" name="responsable" class="form-control">

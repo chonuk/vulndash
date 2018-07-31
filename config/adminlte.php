@@ -58,7 +58,7 @@ return [
     |
     */
 
-    'layout' => null,
+    'layout' => fixed,
 
     /*
     |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => false,
+    'collapse_sidebar' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -110,82 +110,72 @@ return [
     'menu' => [
         'VULNERABILIDADES',
         [
-            'text'        => 'Activas',
-            'url'         => 'vulnerabilidades',
-            'icon'        => 'exclamation-triangle',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        'CRITICIDAD',
-        [
-            'text'       => 'Critica',
-            'url'   =>  '#',
+            'text'  => 'Vulnerabilidades Activas',
+            'url'   => 'vulnerabilidades',
+            'active' => ['vulnerabilidades','vulnerabilidades/*'],
             'icon_color' => 'red',
+            'icon'  => 'list-alt',
         ],
         [
-            'text'       => 'Alta',
-            'url'   =>  '#',
-            'icon_color' => 'yellow',
-        ],
-        [
-            'text'       => 'Media',
-            'url'   =>  '#',
-            'icon_color' => 'blue',
-        ],
-        [
-            'text'       => 'Baja',
-            'url'   =>  '#',
-            'icon_color' => 'gray',
-        ],
-        'ADMINISTRACION',
-        [
-            'text'    => 'Vulnerabilidades',
-            'icon'    => 'exclamation-triangle',
-            'submenu' => [
+            'text'  => 'Por Criticidad',
+            'icon'  => 'list-ol',
+            'icon_color' => 'purple',
+            'submenu' =>
+            [
                 [
-                    'text' => 'Crear',
-                    'url'  => 'vulnerabilidades/create',
+                    'text'  => 'Criticas',
+                    'url'   =>  '#',
+                    'icon_color' => 'red',
                 ],
                 [
-                    'text'    => 'Listar',
-                    'url'     => 'vulnerabilidades',
-                    'active' => ['vulnerabilidades', 'vulnerabilidades?*'],
+                    'text'       => 'Altas',
+                    'url'   =>  '#',
+                    'icon_color' => 'yellow',
                 ],
                 [
-                    'text'  =>  'Importar',
-                    'url'   =>  'vulnerabilidades/importar',
+                    'text'       => 'Medias',
+                    'url'   =>  '#',
+                    'icon_color' => 'light-blue',
                 ],
             ],
         ],
         [
+            'text'  => 'Por Plataforma',
+            'icon'  => 'list-ol',
+            'icon_color' => 'pink',
+            'url'   =>  'vulnerabilidades/plataforma',
+        ],
+        'ADMINISTRACION',
+        [
             'text'  =>  'Plataformas',
-            'icon'  =>  'cloud',
-            'submenu' => [
-                [
-                    'text' => 'Crear',
-                    'url'  => 'plataformas/create',
-                ],
-                [
-                    'text'    => 'Listar',
-                    'url'     => 'plataformas',
-                    'active' => ['plataformas', 'plataformas?*'],
-                ],
-            ],                
+            'icon'  =>  'cubes',
+            'icon_color' => 'green',
+            'url'     => 'plataformas',
+            'active' => ['plataformas*'],
         ],
         [
             'text'  =>  'Activos',
-            'icon'  =>  'sitemap',
-            'submenu' => [
-                [
-                    'text' => 'Crear',
-                    'url'  => 'activos/create',
-                ],
-                [
-                    'text'    => 'Listar',
-                    'url'     => 'activos',
-                ],
-            ],                
-        ],        
+            'icon'  =>  'server',
+            'icon_color' => 'green',
+            'url'     => 'activos',
+            'active' => ['activos*'],
+        ],
+        [
+            'text'        => 'Vulnerabilidades Infra',
+            'url'         => 'vulnsinfra',
+            'active'    =>  ['vulnsinfra*'],
+            'icon'        => 'exclamation-triangle',
+            'icon_color' => 'orange',
+            #'label'       => 4,
+            #'label_color' => 'success',
+        ],
+        [
+            'text'    => 'Vulnerabilidades Serpico',
+            'icon'    => 'exclamation-circle',
+            'icon_color' => 'orange',
+            'url'  => 'vulnsserpico',
+            'active' => ['vulnsserpico*'],
+        ],
     ],
     
 

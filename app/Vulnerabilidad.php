@@ -2,21 +2,42 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Kyslik\ColumnSortable\Sortable;
 
-class Vulnerabilidad extends Model
+class Vulnerabilidad extends Pivot
 {
-	use Sortable;
+    use Sortable;
 
-	protected $table = 'vulnerabilidades';
+   	protected $table = 'vulnerabilidades';
 
-    protected $fillable = ['titulo', 'criticidad_id', 'descripcion', 'remediacion', 'referencias'];
+    protected $fillable = ['activos_id', 'vulnsinfra_id', 'puerto', 'primer_deteccion', 'ultima_deteccion','estados_id'];
 
-    public $sortable = ['id','titulo', 'criticidad_id', 'descripcion', 'remediacion', 'referencias'];
+    public $sortable = ['activos_id', 'vulnsinfra_id', 'puerto', 'primer_deteccion', 'ultima_deteccion','estados_id'];
 
-    public function criticidad()
+    public function activos()
     {
-        return $this->belongsTo('App\Criticidad');
+    	return $this->belongsTo('App\Activo','activos_id');
     }
+
+    public function vulnsinfra()
+    {
+    	return $this->belongsTo('App\VulnInfra','vulnsinfra_id');
+    }
+
+    public function estados()
+    {
+    	return $this->belongsTo('App\Estado');
+    }
+
+    // public function activosvulnerables()
+    // {
+    //     return $this->belongsTo('App\Activo','activos_id');
+    // }
+
+    // public function vulnerabilidadesInfra()
+    // {
+    //     return $this->belongsTo('App\VulnInfra','vulnsinfra_id');
+    // }
+
 }

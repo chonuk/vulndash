@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Vulnerabilidad;
-use App\Criticidad;
+use App\Plataforma;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
+use Illuminate\Database\Eloquent\Collection;
 
 class VulnerabilidadController extends Controller
 {
@@ -20,10 +22,10 @@ class VulnerabilidadController extends Controller
 
         if($sort && $order) 
         {
-            $vulnerabilidades = Vulnerabilidad::with('criticidad')->sortable()->orderBy($sort, $order)->paginate(10);
+            $vulnerabilidades = Vulnerabilidad::with('vulnsinfra.criticidad','estados')->sortable()->orderBy($sort, $order)->paginate(10);
             $links = $vulnerabilidades->appends(['sort' => $sort, 'order' => $order])->links();
         }else{
-            $vulnerabilidades = Vulnerabilidad::with('criticidad')->orderBy('criticidad_id','desc')->sortable()->paginate(10);
+            $vulnerabilidades = Vulnerabilidad::with('vulnsinfra.criticidad','estados')->orderBy('criticidad_id','desc')->sortable()->paginate(10);
             $links = $vulnerabilidades->links();
         }
 
@@ -31,6 +33,34 @@ class VulnerabilidadController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
+    public function plataformas(Request $request, $plataforma_id = 0)
+    {
+        if($plataforma_id == 0)
+        {
+            echo "Listar Vulnerabilidades";die;
+            $plataformas = Plataforma::with('activos.vulnsinfra')->get();
+            foreach ($plataformas as $plataforma)
+            {
+                $vulnArray = $plataforma->activos->pluck('vulnsinfra'); 
+                $vulnerabilidades[$plataforma->nombre] = (new Collection($vulnArray))->collapse()->unique();
+            }
+            return view('vulnerabilidades.plataformas',compact('vulnerabilidades','plataformas'))
+                    ->with('i', (request()->input('page', 1) - 1) * 10);
+        }
+        else
+        {
+            $sort = $request->input('sort'); 
+            $order = $request->input('order');
+
+            $plataforma = Plataforma::with('activos.vulnsinfra','activos.vulnerabilidades')->find($plataforma_id);
+
+            $vulnArray = $plataforma->activos->pluck('vulnsinfra'); 
+            $vulnsinfra = (new Collection($vulnArray))->collapse()->unique('id')->sortByDesc('criticidad_id');
+            #dd($plataforma->activos);
+            return view('vulnerabilidades.plataforma',compact('vulnsinfra','plataforma'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+        }
+     }
 
     /**
      * Show the form for creating a new resource.
@@ -39,8 +69,7 @@ class VulnerabilidadController extends Controller
      */
     public function create()
     {
-        $criticidades = Criticidad::all();
-        return view('vulnerabilidades.create', compact('criticidades'));
+        //
     }
 
     /**
@@ -51,16 +80,7 @@ class VulnerabilidadController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'titulo' => 'required',
-            'criticidad_id' => 'required',
-            'descripcion' => 'required',
-        ]);
-
-        Vulnerabilidad::create($request->all());
-
-        return redirect()->route('vulnerabilidades.index')
-                        ->with('success','Vulnerabilidad creada correctamente');
+        //
     }
 
     /**
@@ -69,9 +89,9 @@ class VulnerabilidadController extends Controller
      * @param  \App\Vulnerabilidad  $vulnerabilidad
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Vulnerabilidad $vulnerabilidad)
     {
-        return view('vulnerabilidades.show', ['vulnerabilidad' => Vulnerabilidad::findOrFail($id)]);
+        //
     }
 
     /**
@@ -80,11 +100,9 @@ class VulnerabilidadController extends Controller
      * @param  \App\Vulnerabilidad  $vulnerabilidad
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {   
-        #$criticidades = Criticidad::all();
-        return view('vulnerabilidades.edit', ['vulnerabilidad' => Vulnerabilidad::findOrFail($id), 'criticidades' => Criticidad::all()]);
-            #compact('vulnerabilidad','criticidades'));
+    public function edit(Vulnerabilidad $vulnerabilidad)
+    {
+        //
     }
 
     /**
@@ -94,19 +112,9 @@ class VulnerabilidadController extends Controller
      * @param  \App\Vulnerabilidad  $vulnerabilidad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vulnerabilidad $vulnerabilidad)
     {
-        request()->validate([
-            'titulo' => 'required',
-            'criticidad_id' => 'required',
-            'descripcion' => 'required',
-        ]);
-        $vulnerabilidad = Vulnerabilidad::findOrFail($id);
-        $vulnerabilidad->update($request->all());
-
-
-        return redirect()->route('vulnerabilidades.index')
-                        ->with('success','Vulnerabilidad actualizada');
+        //
     }
 
     /**
@@ -115,86 +123,8 @@ class VulnerabilidadController extends Controller
      * @param  \App\Vulnerabilidad  $vulnerabilidad
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Vulnerabilidad $vulnerabilidad)
     {
-        $vulnerabilidad = Vulnerabilidad::findOrFail($id);
-        $vulnerabilidad->delete();
-
-        return redirect()->route('vulnerabilidades.index')
-                        ->with('success','Vulnerabilidad '. $vulnerabilidad->titulo .' eliminada');
-    }
-
-    public function importar()
-    {
-        return view('vulnerabilidades.importar');
-    }
-
-    public function import(Request $request)
-    {
-        try {
-
-            $cant = 0;
-
-            $path = $request->file('fileToUpload')->store('upload');
-            
-            $json = \Storage::disk('local')->get($path);
-
-            \Storage::disk('local')->delete('$path');
-
-            $vulns_serpico = json_decode($json);
-
-            foreach ($vulns_serpico as $vulnerabilidad) {
-                //Solo criticidades Criticas, Altas y Medias
-                if($vulnerabilidad->risk < 2){
-                    continue;
-                }
-
-                //Busco por idSerpico
-                $vuln = Vulnerabilidad::where('id_serpico',$vulnerabilidad->id)->first();
-                $vulnerabilidad->overview = str_replace('</paragraph>',"\r\n",$vulnerabilidad->overview);
-                $vulnerabilidad->overview = str_replace('<paragraph>', '',$vulnerabilidad->overview);
-                $vulnerabilidad->remediation = str_replace('</paragraph>',"\r\n",$vulnerabilidad->remediation);
-                $vulnerabilidad->remediation = str_replace('<paragraph>', '' ,$vulnerabilidad->remediation);
-                $vulnerabilidad->references = str_replace('</paragraph>',"\r\n",$vulnerabilidad->references);
-                $vulnerabilidad->references = str_replace('<paragraph>', '' ,$vulnerabilidad->references);
-                
-                //Si no existe Creo el objeto y lo persisto
-                if (!$vuln) {
-                    $cant++;
-                    $new_vuln = new Vulnerabilidad;
-                    $new_vuln->titulo = $vulnerabilidad->title;
-                    $new_vuln->criticidad_id = $vulnerabilidad->risk;
-                    $new_vuln->id_serpico = $vulnerabilidad->id;
-                    $new_vuln->descripcion = $vulnerabilidad->overview;
-                    $new_vuln->remediacion = $vulnerabilidad->remediation;
-                    $new_vuln->referencias = $vulnerabilidad->references;
-                    $new_vuln->save();
-                }else{
-                    if($vuln->criticidad_id != $vulnerabilidad->risk){
-                        $vuln->criticidad_id = $vulnerabilidad->risk;
-                    }
-                    if($vuln->titulo != $vulnerabilidad->title){
-                        $vuln->titulo = $vulnerabilidad->title;
-                    }
-                    if($vuln->descripcion != $vulnerabilidad->overview){
-                        $vuln->descripcion = $vulnerabilidad->overview;
-                    }
-                    if($vuln->remediacion != $vulnerabilidad->remediation){
-                        $vuln->remediacion = $vulnerabilidad->remediation;
-                    }
-                    if($vuln->referencias != $vulnerabilidad->references){
-                        $vuln->referencias = $vulnerabilidad->references;
-                    }
-                    $vuln->save();
-                }
-                
-            }
-        
-            return redirect()->route('vulnerabilidades.index')
-                        ->with('success',$cant.' vulnerabilidades importadas correctamente');
-        } catch (\Exception $ex) {
-            return redirect()->route('vulnerabilidades.index')
-                        ->with('error','Error al importar las vulnerabilidades');
-        }
+        //
     }
 }

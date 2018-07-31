@@ -13,10 +13,10 @@ class CreateVulnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('vulnerabilidades', function (Blueprint $table) {
+        Schema::create('vulnsserpico', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titulo', 100); 
-            $table->integer('criticidad_id'); // 1-'Critica',2-'Alta',3-'Media',4-'Baja'
+            $table->string('titulo', 100)->unique(); 
+            $table->integer('criticidad_id'); // 1-'Baja',2-'Media',3-'Alta',4-'Critica'
             $table->string('descripcion');
             $table->string('remediacion')->nullable();
             $table->string('referencias')->nullable();
@@ -32,6 +32,6 @@ class CreateVulnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vulnerabilidades');
+        Schema::dropIfExists('vulnsserpico');
     }
 }

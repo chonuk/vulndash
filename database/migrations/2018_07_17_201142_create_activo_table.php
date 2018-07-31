@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePlataformasTable extends Migration
+class CreateActivoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePlataformasTable extends Migration
      */
     public function up()
     {
-        Schema::create('plataformas', function (Blueprint $table) {
+        Schema::create('activos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre')->unique();
-            $table->string('responsable')->nullable();
+            $table->string('ip')->unique()->index();
+            $table->string('hostname')->nullable();
+            $table->string('os')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreatePlataformasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plataformas');
+        Schema::dropIfExists('activos');
     }
 }

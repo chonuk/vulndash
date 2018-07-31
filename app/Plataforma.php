@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Kyslik\ColumnSortable\Sortable;
 
 class Plataforma extends Model
@@ -12,13 +13,14 @@ class Plataforma extends Model
     protected $table = 'plataformas';
 
     protected $fillable = [
-        'nombre', 'tipo', 'responsable'
+        'nombre', 'responsable'
     ];
 
-    public $sortable = ['id','nombre', 'tipo', 'responsable'];
+    public $sortable = ['id','nombre', 'responsable'];
 
     public function activos()
     {
-        return $this->hasMany('App\Activo');
+        return $this->belongsToMany('App\Activo');
     }
+
 }
