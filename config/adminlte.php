@@ -110,13 +110,6 @@ return [
     'menu' => [
         'VULNERABILIDADES',
         [
-            'text'  => 'Vulnerabilidades Activas',
-            'url'   => 'vulnerabilidades',
-            'active' => ['vulnerabilidades','vulnerabilidades/*'],
-            'icon_color' => 'red',
-            'icon'  => 'list-alt',
-        ],
-        [
             'text'  => 'Por Criticidad',
             'icon'  => 'list-ol',
             'icon_color' => 'purple',
