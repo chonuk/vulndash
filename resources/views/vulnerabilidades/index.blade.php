@@ -36,7 +36,7 @@
             <td><span class="label label-{{ $vulnerabilidad->vulnsinfra->criticidad->color }}" >{{ $vulnerabilidad->vulnsinfra->criticidad->texto }}</span></td>
             <td>{{ $vulnerabilidad->activos_count }}</td>
             <td>{{ $vulnerabilidad->vulnsinfra->exploit ? 'Si' : '-' }}</td>
-            <td>{{ $vulnerabilidad->primer_deteccion }}</td>
+            <td>{{ $vulnerabilidad->primer_deteccion->format('d/m/Y H:i') }} </td>
             <td>{{ $vulnerabilidad->estados->texto }}</td>
             <td>
                 <a class="btn btn-sm btn-info" href="{{ route('vulnerabilidades.show',$vulnerabilidad->id) }}" data-toggle="tooltip" data-placement="top" title="Ver Detalle"><span class="fa fa-info-circle"></span></a>

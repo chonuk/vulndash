@@ -37,10 +37,14 @@
             <td>{{ $vulninfra->protocolo }}</td>
             <td>{!! $vulninfra->exploit ? '<span class="label label-danger">Si</span>' : '' !!}</td>
             <td>{{ $vulninfra->cve }}</td>
-            <td>{{ $vulninfra->salida_parche }}</td>
+            <td>{{ $vulninfra->salida_parche ? $vulninfra->salida_parche->format('d/m/Y') : null }}</td>
             <td>
+                 <form action="{{ route('vulnsinfra.destroy',$vulninfra->id) }}" onsubmit="return ConfirmDelete()" method="POST">
                     <a class="btn btn-sm btn-info" href="{{ route('vulnsinfra.show',$vulninfra->id) }}" data-toggle="tooltip" data-placement="top" title="Ver Detalle"><span class="fa fa-info-circle"></span></a>
                     <a class="btn btn-sm btn-warning" href="{{ route('vulnsinfra.edit',$vulninfra->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Vulnerabilidad"><span class="fa fa-edit"></span></a>
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar Vulnerabilidad"><span class="fa fa-trash"></span></button>
                 </form>
             </td>
         </tr>
@@ -55,4 +59,21 @@
             {!! $links !!}
         </div>
     </div>
+@endsection
+@section('js')
+<script>
+  function ConfirmDelete()
+  {
+  var x = confirm("¿Seguro que desea eliminar el registro?");
+  if (x)
+    return true;
+  else
+    return false;
+  }
+</script>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 @endsection

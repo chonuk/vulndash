@@ -104,7 +104,7 @@ class VulnSerpicoController extends Controller
 
 
         return redirect()->route('vulnsserpico.index')
-                        ->with('success','VulnSerpico actualizada');
+                        ->with('success','Vulnerabilidad de Serpico editada.');
     }
 
     /**

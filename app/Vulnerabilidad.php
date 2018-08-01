@@ -15,6 +15,8 @@ class Vulnerabilidad extends Pivot
 
     public $sortable = ['activos_id', 'vulnsinfra_id', 'puerto', 'primer_deteccion', 'ultima_deteccion','estados_id'];
 
+    protected $dates = ['created_at','updated_at','primer_deteccion','ultima_deteccion'];
+
     public function activos()
     {
     	return $this->belongsTo('App\Activo','activos_id');
@@ -39,5 +41,6 @@ class Vulnerabilidad extends Pivot
     // {
     //     return $this->belongsTo('App\VulnInfra','vulnsinfra_id');
     // }
+
 
 }

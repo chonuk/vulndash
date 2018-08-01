@@ -15,6 +15,8 @@ class VulnInfra extends Model
 
     public $sortable = ['plugin', 'nombre', 'criticidad_id', 'protocolo', 'exploit','cve','salida_parche'];
 
+    protected $dates = ['created_at','updated_at','salida_parche'];
+
     public function activos()
     {
         #return $this->belongsToMany('App\Activo', 'ocurrenciasinfra', 'vulnsinfra_id', 'activos_id')->withPivot('puerto', 'primer_deteccion','ultima_deteccion', 'estados_id')->withTimestamps();
@@ -30,4 +32,5 @@ class VulnInfra extends Model
     {
         return $this->hasMany('App\Vulnerabilidad','vulnsinfra_id');
     }
+
 }

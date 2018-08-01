@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\VulnInfra;
 use App\Activo;
+use App\Criticidad;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 class VulnInfraController extends Controller
 {
@@ -79,9 +81,9 @@ class VulnInfraController extends Controller
      * @param  \App\VulnInfra  $vulnInfra
      * @return \Illuminate\Http\Response
      */
-    public function edit(VulnInfra $vulnInfra)
+    public function edit($id)
     {
-        //
+        return view('vulnsinfra.edit', ['vulninfra' => VulnInfra::findOrFail($id), 'criticidades' => Criticidad::all()]);
     }
 
     /**
@@ -91,9 +93,23 @@ class VulnInfraController extends Controller
      * @param  \App\VulnInfra  $vulnInfra
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, VulnInfra $vulnInfra)
+    public function update(Request $request, $id)
     {
-        //
+        request()->validate([
+            'plugin' => 'required|unique:vulnsinfra,plugin,'.$id,
+            'criticidad_id' => 'required',
+            'protocolo' => 'required',
+            'descripcion' => 'required',
+            'exploit' => 'required',
+            'resumen' => 'required',
+            'descripcion' => 'required',
+            'solucion' => 'required'
+        ]);
+        $vulninfra = VulnInfra::findOrFail($id);
+        $vulninfra->update($request->all());
+
+        return redirect()->route('vulninfra.show', $id)
+                        ->with('success','Vulnerabilidad de Serpico editada.');
     }
 
     /**
@@ -102,9 +118,14 @@ class VulnInfraController extends Controller
      * @param  \App\VulnInfra  $vulnInfra
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VulnInfra $vulnInfra)
+    public function destroy($id)
     {
-        //
+        $vulninfra = VulnInfra::findOrFail($id);
+        $vulninfra->activos()->detach();
+        $vulninfra->delete();
+
+        return redirect()->route('vulnsinfra.index')
+                        ->with('success','Vulnerabilidad '. $vulninfra->nombre .' eliminada');
     }
 
     public function import()
@@ -148,6 +169,24 @@ class VulnInfraController extends Controller
                             $exploit=0;
                             break;
                     }
+
+                    if($value->patch_publication_date <> 'N/A')
+                    {
+                        $salida_parche = Carbon::createFromFormat('M j, Y H:i:s *', $value->patch_publication_date,'America/Argentina/Buenos_Aires');
+                    }
+                    else
+                    {
+
+                        $salida_parche = null;
+                    }
+                    try{
+                       $primer_deteccion = Carbon::createFromFormat('M j, Y H:i:s *', $value->first_discovered,'America/Argentina/Buenos_Aires');
+                        $ultima_deteccion = Carbon::createFromFormat('M j, Y H:i:s *', $value->last_observed,'America/Argentina/Buenos_Aires');
+                    }
+                    catch(\Exception $e){
+                        dd($e);
+                    }
+
                     $vulninfra = VulnInfra::firstOrCreate(
                         ['plugin' => $value->plugin],
                         [
@@ -160,15 +199,16 @@ class VulnInfraController extends Controller
                             'solucion' => $value->solution,
                             'referencias' => $value->see_also,
                             'cve' => $value->cve,
-                            'salida_parche' => $value->patch_publication_date
+                            'salida_parche' => $salida_parche
                         ]
                     );
+
                     $vulninfra->activos()->syncWithoutDetaching([
                         $activo->id => 
                         [
                             'puerto' => $value->port,
-                            'primer_deteccion' => $value->first_discovered,
-                            'ultima_deteccion' => $value->last_observed,
+                            'primer_deteccion' => $primer_deteccion,
+                            'ultima_deteccion' => $ultima_deteccion,
                             'estados_id' => 4
                         ]
                     ]);
@@ -179,7 +219,7 @@ class VulnInfraController extends Controller
             {
                 $array_msg += ['success' => 'Se importaron '.$cant.' vulnerabilidades de Infraestructura'];
             }
-            return redirect()->route('activos.index')
+            return redirect()->route('vulnsinfra.index')
                         ->with($array_msg);
         } 
     }

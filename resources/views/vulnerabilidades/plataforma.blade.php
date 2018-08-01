@@ -31,8 +31,14 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 				@foreach($plataforma->activos as $activo)
 					@foreach($activo->vulnerabilidades as $vulnerabilidad)
 						@if($vulnerabilidad->vulnsinfra_id == $vulninfra->id)
-							<span class="label label-default">{{ $activo->hostname }}</span><span class="label label-info">{{ $activo->ip }}:{{ $vulnerabilidad->puerto }}</span>
-							<span class="label label-success"><a style="color: white;" href="#">Marcar corregido</a></span><br>
+							<strong>Ip: </strong>{{ $activo->ip }} - <strong>Puerto: </strong>{{ $vulnerabilidad->puerto }}
+							<span class="label label-success pull-right">
+								<a style="color: white;" href="#">Marcar Corregido</a>
+							</span>
+							<span class="label label-info pull-right">
+								<a style="color: white;" href="#">Ver detalle</a>
+							</span>
+							<br>
 						@endif
 					@endforeach
 				@endforeach

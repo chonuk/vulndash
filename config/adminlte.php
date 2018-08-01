@@ -143,7 +143,7 @@ return [
             'text'  => 'Por Plataforma',
             'icon'  => 'list-ol',
             'icon_color' => 'pink',
-            'url'   =>  'vulnerabilidades/plataforma',
+            'url'   =>  'vulnerabilidades/plataformas',
         ],
         'ADMINISTRACION',
         [

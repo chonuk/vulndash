@@ -33,26 +33,42 @@ class VulnerabilidadController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
-    public function plataformas(Request $request, $plataforma_id = 0)
+    public function plataformas(Request $request, $id = 0)
     {
-        if($plataforma_id == 0)
+        $sort = $request->input('sort'); 
+        $order = $request->input('order');
+
+        if($id == 0)
         {
-            echo "Listar Vulnerabilidades";die;
-            $plataformas = Plataforma::with('activos.vulnsinfra')->get();
-            foreach ($plataformas as $plataforma)
+            if($sort && $order) 
             {
-                $vulnArray = $plataforma->activos->pluck('vulnsinfra'); 
-                $vulnerabilidades[$plataforma->nombre] = (new Collection($vulnArray))->collapse()->unique();
+                $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
+                        ->leftJoin('vulnerabilidades','activo_plataforma.activo_id','=','vulnerabilidades.activos_id')
+                            ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
+                            ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
+                        ->selectRaw('count(vulnerabilidades.vulnsinfra_id) as vulnerabilidades')
+                        ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
+                        ->orderBy($sort, $order)->sortable()->paginate(12);
+                $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
             }
-            return view('vulnerabilidades.plataformas',compact('vulnerabilidades','plataformas'))
+            else
+            {
+                $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
+                        ->leftJoin('vulnerabilidades','activo_plataforma.activo_id','=','vulnerabilidades.activos_id')
+                            ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
+                            ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
+                        ->selectRaw('count(vulnerabilidades.vulnsinfra_id) as vulnerabilidades')
+                        ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
+                        ->orderBy('nombre', 'asc')->sortable()->paginate(12);
+                $links = $plataformas->links();
+            }
+
+            return view('vulnerabilidades.plataformas',compact('plataformas','links','sort','order'))
                     ->with('i', (request()->input('page', 1) - 1) * 10);
         }
         else
         {
-            $sort = $request->input('sort'); 
-            $order = $request->input('order');
-
-            $plataforma = Plataforma::with('activos.vulnsinfra','activos.vulnerabilidades')->find($plataforma_id);
+            $plataforma = Plataforma::with('activos.vulnsinfra','activos.vulnerabilidades')->find($id);
 
             $vulnArray = $plataforma->activos->pluck('vulnsinfra'); 
             $vulnsinfra = (new Collection($vulnArray))->collapse()->unique('id')->sortByDesc('criticidad_id');
