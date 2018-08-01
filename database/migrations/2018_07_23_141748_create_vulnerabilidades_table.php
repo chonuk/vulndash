@@ -12,8 +12,6 @@ class CreateVulnerabilidadesTable extends Migration
      * @return void
      */
 
-    // Plugin   Plugin Name Severity    IP Address  Protocol    Port    Exploit?    DNS Name    NetBIOS Name    Plugin Text Synopsis    Description Solution    See Also    CVE First Discovered    Last Observed   Patch Publication Date
-
     public function up()
     {
         Schema::create('vulnerabilidades', function (Blueprint $table) {
@@ -29,7 +27,7 @@ class CreateVulnerabilidadesTable extends Migration
             $table->foreign('activos_id')->references('id')->on('activos')->onDelete('cascade');
             $table->foreign('vulnsinfra_id')->references('id')->on('vulnsinfra')->onDelete('cascade');
 
-            $table->unique('activos_id', 'vulnsinfra_id', 'puerto');
+            $table->unique(['activos_id', 'vulnsinfra_id', 'puerto']);
         });
     }
 
