@@ -53,8 +53,9 @@ class LoginController extends Controller
     }
 
     protected function attemptLogin(Request $request) {
-        $credentials = $request->only($this->username(), 'password');
+        $credentials = $request->only($this->username(), 'password','dominio');
         $username = $credentials[$this->username()];
+        $dominio = $credentials['dominio'];
         $password = $credentials['password'];
         $nombre = '';
 
@@ -78,7 +79,7 @@ class LoginController extends Controller
         }
 
         $ldapconn = ldap_connect($adServer) or $this->msg = "Could not connect to LDAP server.";
-        $ldaprdn = $dominio. "\\" . $username;
+        $ldaprdn = $dominio. "\\" . $username; dd($ldaprdn);
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION,3);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS,0);
 
