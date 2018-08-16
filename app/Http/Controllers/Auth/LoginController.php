@@ -79,7 +79,7 @@ class LoginController extends Controller
         }
 
         $ldapconn = ldap_connect($adServer) or $this->msg = "Could not connect to LDAP server.";
-        $ldaprdn = $dominio. "\\" . $username; dd($ldaprdn);
+        $ldaprdn = $dominio. "\\" . $username; 
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION,3);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS,0);
 
