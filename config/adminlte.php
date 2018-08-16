@@ -58,7 +58,7 @@ return [
     |
     */
 
-    'layout' => fixed,
+    'layout' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -87,9 +87,9 @@ return [
 
     'dashboard_url' => '/',
 
-    'logout_url' => 'vulnerabilidades/logout',
+    'logout_url' => 'logout',
 
-    'logout_method' => null,
+    'logout_method' => 'POST',
 
     'login_url' => 'login',
 
