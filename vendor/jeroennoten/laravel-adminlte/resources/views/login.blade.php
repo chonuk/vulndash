@@ -40,8 +40,8 @@
                 </div>
                 <div class="form-group has-feedback {{ $errors->has('dominio') ? 'has-error' : '' }}">
                     <select  name="dominio" id="dominio" class="form-control glyphicon">
-                        <option value=1>&#xe135; TASA</option>
                         <option value=2>&#xe135; TMOVILES</option>
+                        <option value=1>&#xe135; TASA</option>
                     </select>
                     @if ($errors->has('dominio'))
                         <span class="help-block">
@@ -51,11 +51,6 @@
                 </div>                
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                                <input type="checkbox" name="remember"> {{ trans('adminlte::adminlte.remember_me') }}
-                            </label>
-                        </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">

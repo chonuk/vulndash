@@ -77,7 +77,6 @@ class LoginController extends Controller
                 $grupoAdmin = env('ADLDAP_GROUP_ADMIN_2', '');
                 break;
         }
-
         $ldapconn = ldap_connect($adServer) or $this->msg = "Could not connect to LDAP server.";
         $ldaprdn = $dominio. "\\" . $username; 
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION,3);
@@ -88,12 +87,11 @@ class LoginController extends Controller
         if ($ldapbind)
         {
             $filter = "(&(samaccountname=$username) (objectClass=user)(objectCategory=person) (memberOf=$grupo) )";
+            //$filter = "(&(samaccountname=$username) (objectClass=user)(objectCategory=person) )";
             //$fields = array("department","company","cn","mail"); 
             $sr = ldap_search($ldapconn, $base_dn, $filter/*,$fields*/); 
             $info = ldap_get_entries($ldapconn, $sr); 
-            
             $nombre = $info[0]["displayname"][0];
-            
 
             if (!$nombre=='')
             {

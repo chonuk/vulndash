@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('home');
-});
+})->middleware('auth');;
 
 Route::get('vulnsinfra/import', 'VulnInfraController@import')->name('vulnsinfra.import')->middleware('auth');
 Route::post('vulnsinfra/importar', 'VulnInfraController@importar')->name('vulnsinfra.importar')->middleware('auth');
@@ -40,5 +40,5 @@ Route::get('vulnerabilidades/data', 'VulnerabilidadController@data')->name('vuln
 Route::resource('vulnerabilidades','VulnerabilidadController')->middleware('auth');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');;
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
