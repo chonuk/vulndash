@@ -20,10 +20,10 @@ class ActivoController extends Controller
 
         if($sort && $order) 
         {
-            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('vulnerabilidades')->sortable()->orderBy($sort, $order)->paginate(10);
+            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('ocurrencias')->sortable()->orderBy($sort, $order)->paginate(10);
             $links = $activos->appends(['sort' => $sort, 'order' => $order])->links();
         }else{
-            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('vulnerabilidades')->orderBy('hostname','asc')->sortable()->paginate(10);
+            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('ocurrencias')->orderBy('hostname','asc')->sortable()->paginate(10);
             $links = $activos->links();
         }
 
@@ -60,6 +60,16 @@ class ActivoController extends Controller
         return redirect()->route('activos.index')
                         ->with('success','Activo creada correctamente');
     }
+
+    public function show($id)
+    {
+        $activo = Activo::with('ocurrencias.vulnerabilidades.criticidad','plataformas')->find($id);
+
+        return view('activos.show',compact('activo'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

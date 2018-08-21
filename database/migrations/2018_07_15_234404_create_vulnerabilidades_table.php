@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVulnsTable extends Migration
+class CreateVulnerabilidadesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,19 @@ class CreateVulnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('vulnsserpico', function (Blueprint $table) {
+        Schema::create('vulnerabilidades', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titulo', 100)->unique(); 
+            $table->integer('plugin')->unique()->index(); // tambien id_serpico
+            $table->string('nombre')->unique(); 
             $table->integer('criticidad_id'); // 1-'Baja',2-'Media',3-'Alta',4-'Critica'
+            $table->string('protocolo')->nullable();
+            $table->boolean('exploit')->nullable();
+            $table->string('resumen')->nullable();
             $table->string('descripcion');
-            $table->string('remediacion')->nullable();
+            $table->string('solucion')->nullable();
             $table->string('referencias')->nullable();
-            $table->integer('id_serpico')->nullable();
+            $table->string('cve')->nullable();
+            $table->datetime('salida_parche')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +37,6 @@ class CreateVulnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vulnsserpico');
+        Schema::dropIfExists('vulnerabilidades');
     }
 }

@@ -6,7 +6,7 @@
             <h3>Editar</h3>
         </div>
         <div class="pull-right">
-            <a class="btn btn-sm btn-default" href="{{ route('vulnsinfra.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+            <a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
         </div>
     </div>
 
@@ -23,13 +23,13 @@
     @endif
 
 
-    <form class="form-horizontal" action="{{ route('vulnsinfra.update',$vulninfra->id) }}" method="POST">
+    <form class="form-horizontal" action="{{ route('vulnerabilidades.update',$vulnerabilidad->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
             <label for="nombre" class="col-lg-2 col-lg-offset-1" control-label>Nombre</label>
             <div class="col-lg-7">
-                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ $vulninfra->nombre }}"placeholder="Nombre">
+                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ $vulnerabilidad->nombre }}"placeholder="Nombre">
             </div>
         </div>
         <div class="form-group">
@@ -38,7 +38,7 @@
                 <select name="criticidad_id" id="criticidad">
                     @foreach ($criticidades as $criticidad)
                         <option value="{{ $criticidad->id }}"
-                        @if ($criticidad->id == $vulninfra->criticidad_id)
+                        @if ($criticidad->id == $vulnerabilidad->criticidad_id)
                             selected
                         @endif
                         >{{$criticidad->texto}}</option>
@@ -48,50 +48,50 @@
             <label for="exploit" class="col-lg-1" control-label>Exploit?</label>
             <div class="col-lg-2">
                 <select name="exploit" id="exploit">
-                    <option value="1" {{ $vulninfra->exploit === '1' ? 'selected' : '' }}>Si</option>
-                    <option value="0" {{ $vulninfra->exploit === '0' ? 'selected' : '' }}>No</option>
+                    <option value="1" {{ $vulnerabilidad->exploit === '1' ? 'selected' : '' }}>Si</option>
+                    <option value="0" {{ $vulnerabilidad->exploit === '0' ? 'selected' : '' }}>No</option>
                  </select>
             </div>
             <label for="protocolo" class="col-lg-1" control-label>Protocolo</label>
             <div class="col-lg-1">
                 <select name="protocolo" id="protocolo">
-                    <option value="TCP" {{ $vulninfra->protocolo === 'TCP' ? 'selected' : '' }}>TCP</option>
-                    <option value="UDP" {{ $vulninfra->protocolo === 'UDP' ? 'selected' : '' }}>UDP</option>
+                    <option value="TCP" {{ $vulnerabilidad->protocolo === 'TCP' ? 'selected' : '' }}>TCP</option>
+                    <option value="UDP" {{ $vulnerabilidad->protocolo === 'UDP' ? 'selected' : '' }}>UDP</option>
                  </select>
             </div>
         </div>
         <div class="form-group">
             <label for="cve" class="col-lg-2 col-lg-offset-1" control-label>CVE</label>
             <div class="col-lg-2">
-                <input type="text" id="cve" name="cve" class="form-control" value="{{ $vulninfra->cve }}" placeholder="CVE">
+                <input type="text" id="cve" name="cve" class="form-control" value="{{ $vulnerabilidad->cve }}" placeholder="CVE">
             </div> 
             <label for="salida_parche" class="col-lg-2 col-lg-offset-1" control-label>Salida Parche</label>
             <div class="col-lg-2">
-                <input type="date" id="salida_parche" name="salida_parche" class="form-control" value="{{ $vulninfra->salida_parche }}" placeholder="Fecha Salida Parche">
+                <input type="date" id="salida_parche" name="salida_parche" class="form-control" value="{{ $vulnerabilidad->salida_parche }}" placeholder="Fecha Salida Parche">
             </div>             
         </div>
         <div class="form-group">
             <label for="resumen" class="col-lg-2 col-lg-offset-1" control-label>Resumen</label>
             <div class="col-lg-7">
-                <textarea class="form-control" name="resumen" id="resumen" placeholder="Resumen">{{ $vulninfra->resumen }}</textarea>
+                <textarea class="form-control" name="resumen" id="resumen" placeholder="Resumen">{{ $vulnerabilidad->resumen }}</textarea>
             </div>
         </div>                 
         <div class="form-group">
             <label for="descripcion" class="col-lg-2 col-lg-offset-1" control-label>Descripcion</label>
             <div class="col-lg-7">
-                <textarea class="form-control" style="height:100px" name="descripcion" id="descripcion" placeholder="Descripcion">{{ $vulninfra->descripcion }}</textarea>
+                <textarea class="form-control" style="height:100px" name="descripcion" id="descripcion" placeholder="Descripcion">{{ $vulnerabilidad->descripcion }}</textarea>
             </div>
         </div>            
         <div class="form-group">
             <label for="solucion" class="col-lg-2 col-lg-offset-1" control-label>Solucion</label>
             <div class="col-lg-7">
-                <textarea class="form-control" style="height:150px" name="solucion" id="solucion" placeholder="Solucion">{{ $vulninfra->solucion }}</textarea>
+                <textarea class="form-control" style="height:150px" name="solucion" id="solucion" placeholder="Solucion">{{ $vulnerabilidad->solucion }}</textarea>
             </div>
         </div>            
         <div class="form-group">
             <label for="referencias" class="col-lg-2 col-lg-offset-1" control-label>Referencias</label>
             <div class="col-lg-7">
-                <textarea class="form-control" style="height:80px" name="referencias" id="referencias" placeholder="Referencias">{{ $vulninfra->referencias }}</textarea>
+                <textarea class="form-control" style="height:80px" name="referencias" id="referencias" placeholder="Referencias">{{ $vulnerabilidad->referencias }}</textarea>
             </div>
         </div>
         <div class="form-group">

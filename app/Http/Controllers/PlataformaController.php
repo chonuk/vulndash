@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Plataforma;
-use App\TipoPlataforma;
 use Illuminate\Http\Request;
 
 class PlataformaController extends Controller
@@ -20,15 +19,30 @@ class PlataformaController extends Controller
 
         if($sort && $order) 
         {
-            $plataformas = Plataforma::withCount('activos')->sortable()->orderBy($sort, $order)->paginate(10);
+            $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
+                    ->leftJoin('ocurrencias','activo_plataforma.activo_id','=','ocurrencias.activos_id')
+                        ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
+                        ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
+                    ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
+                    ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
+                    ->orderBy($sort, $order)->sortable()->paginate(12);
             $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
-        }else{
-            $plataformas = Plataforma::withCount('activos')->orderBy('vulnerabilidades','desc')->sortable()->paginate(10);
+        }
+        else
+        {
+            $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
+                    ->leftJoin('ocurrencias','activo_plataforma.activo_id','=','ocurrencias.activos_id')
+                        ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
+                        ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
+                    ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
+                    ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
+                    ->orderBy('nombre', 'asc')->sortable()->paginate(12);
             $links = $plataformas->links();
         }
 
         return view('plataformas.index',compact('plataformas','links','sort','order'))
-            ->with('i', (request()->input('page', 1) - 1) * 10);
+                ->with('i', (request()->input('page', 1) - 1) * 10);
+
     }
 
     /**
@@ -67,7 +81,13 @@ class PlataformaController extends Controller
      */
     public function show(Plataforma $plataforma)
     {
-        // Ver Detalle de la plataforma con sus activos
+        $plataforma = Plataforma::with('activos.vulnerabilidades','activos.ocurrencias')->find($id);
+
+        $vulnArray = $plataforma->activos->pluck('vulnerabilidades'); 
+        $vulnerabilidades = (new Collection($vulnArray))->collapse()->unique('id')->sortByDesc('criticidad_id');
+
+        return view('plataformas.show',compact('vulnerabilidades','plataforma'))
+        ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     /**

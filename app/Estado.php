@@ -13,8 +13,8 @@ class Estado extends Model
 
 	public $sortable = ['id','texto'];
 
-    public function vulnerabilidades()
+    public function ocurrencias()
     {
-        return $this->hasMany('App\Vulnerabilidad');
+        return $this->hasMany('App\Ocurrencia');
     }
 }

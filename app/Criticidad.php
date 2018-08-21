@@ -13,13 +13,8 @@ class Criticidad extends Model
 
 	public $sortable = ['id','texto'];
 
-    public function vulnsinfra()
+    public function vulnerabilidades()
     {
-        return $this->hasMany('App\VulnInfra');
-    }
-
-    public function vulnsserpico()
-    {
-        return $this->hasMany('App\VulnSerpico');
+        return $this->hasMany('App\Vulnerabilidad');
     }
 }

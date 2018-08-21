@@ -2,45 +2,34 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
-class Vulnerabilidad extends Pivot
+class Vulnerabilidad extends Model
 {
     use Sortable;
 
    	protected $table = 'vulnerabilidades';
 
-    protected $fillable = ['activos_id', 'vulnsinfra_id', 'puerto', 'primer_deteccion', 'ultima_deteccion','estados_id'];
+    protected $fillable = ['plugin', 'nombre', 'criticidad_id', 'protocolo', 'exploit','resumen','descripcion','solucion','referencias','cve','salida_parche'];
 
-    public $sortable = ['activos_id', 'vulnsinfra_id', 'puerto', 'primer_deteccion', 'ultima_deteccion','estados_id'];
+    public $sortable = ['plugin', 'nombre', 'criticidad_id', 'protocolo', 'exploit','cve','salida_parche'];
 
-    protected $dates = ['created_at','updated_at','primer_deteccion','ultima_deteccion'];
+    protected $dates = ['created_at','updated_at','salida_parche'];
 
     public function activos()
     {
-    	return $this->belongsTo('App\Activo','activos_id');
+        return $this->belongsToMany('App\Activo','ocurrencias','vulnerabilidades_id','activos_id')->using('App\Ocurrencia')->withPivot('puerto','primer_deteccion','ultima_deteccion','estados_id')->withTimestamps();
     }
 
-    public function vulnsinfra()
+    public function criticidad()
     {
-    	return $this->belongsTo('App\VulnInfra','vulnsinfra_id');
+        return $this->belongsTo('App\Criticidad');
     }
 
-    public function estados()
+    public function ocurrencias()
     {
-    	return $this->belongsTo('App\Estado');
+        return $this->hasMany('App\Ocurrencia','vulnerabilidades_id');
     }
-
-    // public function activosvulnerables()
-    // {
-    //     return $this->belongsTo('App\Activo','activos_id');
-    // }
-
-    // public function vulnerabilidadesInfra()
-    // {
-    //     return $this->belongsTo('App\VulnInfra','vulnsinfra_id');
-    // }
-
 
 }

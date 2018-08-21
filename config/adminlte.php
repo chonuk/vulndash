@@ -132,12 +132,6 @@ return [
                 ],
             ],
         ],
-        [
-            'text'  => 'Por Plataforma',
-            'icon'  => 'list-ol',
-            'icon_color' => 'pink',
-            'url'   =>  'vulnerabilidades/plataformas',
-        ],
         'ADMINISTRACION',
         [
             'text'  =>  'Plataformas',
@@ -154,20 +148,13 @@ return [
             'active' => ['activos*'],
         ],
         [
-            'text'        => 'Vulnerabilidades Infra',
-            'url'         => 'vulnsinfra',
-            'active'    =>  ['vulnsinfra*'],
+            'text'        => 'Vulnerabilidades',
+            'url'         => 'vulnerabilidades',
+            'active'    =>  ['vulnerabilidades*'],
             'icon'        => 'exclamation-triangle',
             'icon_color' => 'orange',
             #'label'       => 4,
             #'label_color' => 'success',
-        ],
-        [
-            'text'    => 'Vulnerabilidades Serpico',
-            'icon'    => 'exclamation-circle',
-            'icon_color' => 'orange',
-            'url'  => 'vulnsserpico',
-            'active' => ['vulnsserpico*'],
         ],
     ],
     

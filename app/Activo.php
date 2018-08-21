@@ -20,14 +20,14 @@ class Activo extends Model
         return $this->belongsToMany('App\Plataforma');
     }
 
-    public function vulnsinfra()
-    {
-        return $this->belongsToMany('App\VulnInfra','vulnerabilidades','activos_id','vulnsinfra_id')->using('App\Vulnerabilidad')->withPivot('puerto','primer_deteccion','ultima_deteccion','estados_id')->withTimestamps();
-    }
-
     public function vulnerabilidades()
     {
-        return $this->hasMany('App\Vulnerabilidad','activos_id');
+        return $this->belongsToMany('App\Vulnerabilidad','ocurrencias','activos_id','vulnerabilidades_id')->using('App\Ocurrencia')->withPivot('puerto','primer_deteccion','ultima_deteccion','estados_id')->withTimestamps();
+    }
+
+    public function ocurrencias()
+    {
+        return $this->hasMany('App\Ocurrencia','activos_id');
     }
 
 }

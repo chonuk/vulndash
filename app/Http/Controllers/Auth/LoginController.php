@@ -101,7 +101,6 @@ class LoginController extends Controller
                     $user = new \App\User();
                     $user->username = $username;
                     $user->name = $nombre;
-                    $user->password = '';
                     $user->role = 'USER';
                     for ($i=0; $i<$info[0]["memberof"]["count"]; $i++) 
                     {

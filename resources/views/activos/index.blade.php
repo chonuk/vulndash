@@ -1,5 +1,9 @@
 @extends('adminlte::page')
-
+@section('css')
+<style>
+table, thead,tbody,th,td { border: 1px solid blue !important;}
+</style>
+@endsection
 @section('content')
     @if ($message_ok = Session::get('success'))
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -35,13 +39,14 @@
             
             <td> 
                 @foreach ($activo->plataformas as $plataforma)
-                    {{ $plataforma->nombre }}
+                    <a href="{{ route('vulnerabilidades.plataformas',$plataforma->plataforma_id) }}">{{ $plataforma->nombre }}</a>
                     <br>
                 @endforeach
             </td>
             <td>{{ $activo->vulnerabilidades_count }}</td>
             <td>
                 <form action="{{ route('activos.destroy',$activo->id) }}" onsubmit="return ConfirmDelete()" method="POST">
+                    <a class="btn btn-sm btn-info" href="{{ route('activos.show',$activo->id) }}" data-toggle="tooltip" data-placement="top" title="Ver Detalle"><span class="fa fa-info-circle"></span></a>
                     <a class="btn btn-sm btn-warning" href="{{ route('activos.edit',$activo->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Activo"><span class="fa fa-edit"></span></a>
                     @csrf
                     @method('DELETE')
