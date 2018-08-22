@@ -1,9 +1,4 @@
 @extends('adminlte::page')
-@section('css')
-<style>
-table, thead,tbody,th,td { border: 1px solid blue !important;}
-</style>
-@endsection
 @section('content')
     @if ($message_ok = Session::get('success'))
         <div class="alert alert-success alert-dismissible" role="alert">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Plataforma;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 
 class PlataformaController extends Controller
 {
@@ -25,7 +26,7 @@ class PlataformaController extends Controller
                         ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
                     ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
                     ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
-                    ->orderBy($sort, $order)->sortable()->paginate(12);
+                    ->orderByRaw($sort.' COLLATE NOCASE '.$order)->sortable()->paginate(12);
             $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
         }
         else
@@ -36,7 +37,7 @@ class PlataformaController extends Controller
                         ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
                     ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
                     ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
-                    ->orderBy('nombre', 'asc')->sortable()->paginate(12);
+                    ->orderByRaw('nombre COLLATE NOCASE asc')->sortable()->paginate(12);
             $links = $plataformas->links();
         }
 
@@ -79,7 +80,7 @@ class PlataformaController extends Controller
      * @param  \App\Plataforma  $plataforma
      * @return \Illuminate\Http\Response
      */
-    public function show(Plataforma $plataforma)
+    public function show($id)
     {
         $plataforma = Plataforma::with('activos.vulnerabilidades','activos.ocurrencias')->find($id);
 

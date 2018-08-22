@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Vulnerabilidad;
+use App\Ocurrencia;
 use App\Plataforma;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;

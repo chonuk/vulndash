@@ -1,9 +1,4 @@
 @extends('adminlte::page')
-@section('css')
-<style>
-table, thead,tbody,th,td { border: 1px solid blue !important;}
-</style>
-@endsection
 @section('content_header')
 <form class="form-inline">
   <div class="form-group">

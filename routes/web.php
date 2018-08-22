@@ -11,17 +11,17 @@
 |
 */
 
-Route::get('vulnerabilidades/import', 'VulnerabilidadController@import')->name('vulnerabilidades.import')->middleware('auth');
-Route::post('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar')->middleware('auth');
+Route::get('vulnerabilidades/import', 'VulnerabilidadController@import')->name('vulnerabilidades.import')->middleware('auth','role:admin');
+Route::post('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar')->middleware('auth','role:admin');
 Route::resource('vulnerabilidades','VulnerabilidadController')->middleware('auth');
 
-Route::get('plataformas/import', 'PlataformaController@import')->name('plataformas.import')->middleware('auth');
-Route::post('plataformas/importar', 'PlataformaController@importar')->name('plataformas.importar')->middleware('auth');
-Route::post('plataformas/{id}/detach', 'PlataformaController@detach')->name('plataformas.detach')->middleware('auth');
+Route::get('plataformas/import', 'PlataformaController@import')->name('plataformas.import')->middleware('auth','role:admin');
+Route::post('plataformas/importar', 'PlataformaController@importar')->name('plataformas.importar')->middleware('auth','role:admin');
+Route::post('plataformas/{id}/detach', 'PlataformaController@detach')->name('plataformas.detach')->middleware('auth','role:admin');
 Route::resource('plataformas','PlataformaController')->middleware('auth');
 
-Route::get('activos/import', 'ActivoController@import')->name('activos.import')->middleware('auth');
-Route::post('activos/importar', 'ActivoController@importar')->name('activos.importar')->middleware('auth');
+Route::get('activos/import', 'ActivoController@import')->name('activos.import')->middleware('auth','role:admin');
+Route::post('activos/importar', 'ActivoController@importar')->name('activos.importar')->middleware('auth','role:admin');
 Route::resource('activos','ActivoController')->middleware('auth');
 
 #Route::post('import-file', 'ExcelController@importFile')->name('import.file')->middleware('auth');
