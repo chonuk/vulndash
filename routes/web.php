@@ -31,5 +31,5 @@ Route::resource('ocurrencias','OcurrenciaController')->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');;
+Route::get('/', 'HomeController@index')->name('home')->middleware('auth');;
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
