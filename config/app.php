@@ -163,7 +163,6 @@ return [
         JeroenNoten\LaravelAdminLte\ServiceProvider::class,
 	    Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Yajra\DataTables\DataTablesServiceProvider::class,
         Adldap\Laravel\AdldapServiceProvider::class,
         Adldap\Laravel\AdldapAuthServiceProvider::class,
 
@@ -218,7 +217,6 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Adldap' => Adldap\Laravel\Facades\Adldap::class,
 
     ],

@@ -22,7 +22,7 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 	<div class="input-group">
     	<div class="input-group-addon">Plataformas</div>
 	@foreach($activo->plataformas as $plataforma)
-	<a class="btn btn-sm btn-default" href="{{ route('vulnerabilidades.plataformas',$plataforma->id) }}" >{{ $plataforma->nombre }}</a>
+	<a class="btn btn-sm btn-default" href="{{ route('plataformas.show',$plataforma->id) }}" >{{ $plataforma->nombre }}</a>
 	@endforeach
 	</div>
     <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>

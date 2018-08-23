@@ -26,6 +26,7 @@
     <form class="form-horizontal" action="{{ route('vulnerabilidades.update',$vulnerabilidad->id) }}" method="POST">
         @csrf
         @method('PUT')
+	<input type="hidden" name="plugin" value="{{ $vulnerabilidad->plugin }}">
         <div class="form-group">
             <label for="nombre" class="col-lg-2 col-lg-offset-1" control-label>Nombre</label>
             <div class="col-lg-7">
@@ -48,6 +49,7 @@
             <label for="exploit" class="col-lg-1" control-label>Exploit?</label>
             <div class="col-lg-2">
                 <select name="exploit" id="exploit">
+		    <option></option>
                     <option value="1" {{ $vulnerabilidad->exploit === '1' ? 'selected' : '' }}>Si</option>
                     <option value="0" {{ $vulnerabilidad->exploit === '0' ? 'selected' : '' }}>No</option>
                  </select>
@@ -55,6 +57,7 @@
             <label for="protocolo" class="col-lg-1" control-label>Protocolo</label>
             <div class="col-lg-1">
                 <select name="protocolo" id="protocolo">
+		    <option></option>
                     <option value="TCP" {{ $vulnerabilidad->protocolo === 'TCP' ? 'selected' : '' }}>TCP</option>
                     <option value="UDP" {{ $vulnerabilidad->protocolo === 'UDP' ? 'selected' : '' }}>UDP</option>
                  </select>

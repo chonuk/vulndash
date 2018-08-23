@@ -89,10 +89,7 @@ class VulnerabilidadController extends Controller
         request()->validate([
             'plugin' => 'required|unique:vulnerabilidades,plugin,'.$id,
             'criticidad_id' => 'required',
-            'protocolo' => 'required',
             'descripcion' => 'required',
-            'exploit' => 'required',
-            'resumen' => 'required',
             'descripcion' => 'required',
             'solucion' => 'required'
         ]);
@@ -127,12 +124,13 @@ class VulnerabilidadController extends Controller
     public function importar(Request $request)
     {
         if($request->hasFile('fileToUpload')){
+	    $cant = 0;
+	    $duplicadas = 0;
             switch($request->input('tipo')){
             case 'nesuss':
-                $cant = 0;
                 $path = $request->file('fileToUpload')->getRealPath();
                 $data = \Excel::load($path)->get();
-
+dd($data);
                 if($data->count()){
                     foreach ($data as $key => $value) {
                         $cant++;
@@ -193,7 +191,6 @@ class VulnerabilidadController extends Controller
                                 'referencias' => $value->see_also,
                                 'cve' => $value->cve,
                                 'salida_parche' => $salida_parche,
-                                'id_serpico' => $id_serpico,
                             ]
                         );
 
@@ -211,9 +208,6 @@ class VulnerabilidadController extends Controller
                 break;
 
             case 'serpico':
-                $cant = 0;
-                $duplicadas = 0;
-
                 $path = $request->file('fileToUpload')->store('upload');
             
                 $json = \Storage::disk('local')->get($path);
@@ -224,12 +218,12 @@ class VulnerabilidadController extends Controller
 
                 foreach ($vulnerabilidades as $vulnerabilidad) {
                     //Solo criticidades Criticas, Altas y Medias
-                    if($Vulnerabilidad->risk < 2){
+                    if($vulnerabilidad->risk < 2){
                         continue;
                     }
 
                     //Busco por idSerpico
-                    $vulnerabilidad = Vulnerabilidad::where('id_serpico',$vulnerabilidad->id)->first();
+                    $vuln = Vulnerabilidad::where('plugin',$vulnerabilidad->id)->first();
                     $vulnerabilidad->overview = str_replace('</paragraph>',"\r\n",$vulnerabilidad->overview);
                     $vulnerabilidad->overview = str_replace('<paragraph>', '',$vulnerabilidad->overview);
                     $vulnerabilidad->remediation = str_replace('</paragraph>',"\r\n",$vulnerabilidad->remediation);

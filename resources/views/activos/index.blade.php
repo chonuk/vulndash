@@ -34,7 +34,7 @@
             
             <td> 
                 @foreach ($activo->plataformas as $plataforma)
-                    <a href="{{ route('vulnerabilidades.plataformas',$plataforma->plataforma_id) }}">{{ $plataforma->nombre }}</a>
+                    <a href="{{ route('plataformas.show',$plataforma->plataforma_id) }}">{{ $plataforma->nombre }}</a>
                     <br>
                 @endforeach
             </td>
