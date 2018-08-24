@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => true,
+    'collapse_sidebar' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -110,26 +110,55 @@ return [
     'menu' => [
         'VULNERABILIDADES',
         [
-            'text'  => 'Por Criticidad',
-            'icon'  => 'list-ol',
-            'icon_color' => 'purple',
+            'text'  => 'Ocurrencias',
+            'icon'  => 'exclamation-circle',
+            'icon_color' => 'red',
             'submenu' =>
             [
                 [
-                    'text'  => 'Criticas',
-                    'url'   =>  '#',
-                    'icon_color' => 'red',
+                    'text'  =>  'Por Vulnerabilidad',
+                    'icon'  =>  'exclamation-triangle',
+                    'icon_color' => 'white',
+                    'url'     => 'ocurrencias',
+                    'active' => ['ocurrencias*'],
+                ],
+                [                
+                    'text'  => 'Por Criticidad',
+                    'icon'  => 'list-ol',
+                    'icon_color' => 'white',
+                    'submenu' =>
+                    [
+                        [
+                            'text'  => 'Criticas',
+                            'url'   =>  '#',
+                            'icon_color' => 'red',
+                        ],
+                        [
+                            'text'       => 'Altas',
+                            'url'   =>  '#',
+                            'icon_color' => 'yellow',
+                        ],
+                        [
+                            'text'       => 'Medias',
+                            'url'   =>  '#',
+                            'icon_color' => 'light-blue',
+                        ],
+                    ],
                 ],
                 [
-                    'text'       => 'Altas',
-                    'url'   =>  '#',
-                    'icon_color' => 'yellow',
+                    'text' => 'Por Plataformas',
+                    'icon' => 'cubes',
+                    'icon_color' => 'white',
+                    'url' => '#',
+                    'active' => ['#'],
                 ],
                 [
-                    'text'       => 'Medias',
-                    'url'   =>  '#',
-                    'icon_color' => 'light-blue',
-                ],
+                    'text' => 'Por Activos',
+                    'icon' => 'server',
+                    'icon_color' => 'white',
+                    'url' => '#',
+                    'active' => ['#'],
+                ],                
             ],
         ],
         'ADMINISTRACION',

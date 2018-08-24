@@ -12,12 +12,12 @@
         </div>
         <div class="col-lg-12">
             <div class="col-lg-4">
-		<div class="well col-lg-12">
-                <strong>Nessus Security Center<br>CSV - columnas: </strong>
-                <ul>
-                	<li>Plugin</li>
-                        <li>Plugin Name</li>
-                        <li>Severity</li>
+        		<div class="well col-lg-12">
+                    <strong>Nessus Security Center<br>Archivo csv - columnas: </strong>
+                    <ul>
+                    	<li><strong>Plugin</strong></li>
+                        <li><strong>Plugin Name</strong></li>
+                        <li><strong>Severity</strong></li>
                         <li>Ip Address</li>
                         <li>Protocol</li>
                         <li>Port</li>
@@ -25,47 +25,64 @@
                         <li>DNS Name</li>
                         <li>NetBIOS Name</li>
                         <li>Synopsis</li>
-                        <li>Description</li>
+                        <li><strong>Description</strong></li>
                         <li>Solution</li>
                         <li>See Also</li>
                         <li>CVE</li>
                         <li>First Discovered</li>
                         <li>Last Observed</li>
                         <li>Patch Publication Date</li>
-                </ul>
-		</div>
+                    </ul>
+        		</div>
             </div>            
-	    <div class="col-lg-4">
-		<div class="well col-lg-12">
-		<strong>Faast<br>CSV - columnas: </strong>
-                <ul>
-			<li>A definir</li>
-		</ul>
-		</div>
-	    </div>
-	    <div class="col-lg-4">
-		<div class="well col-lg-12">
-	    		<strong>Serpico<br>Json exportado sin modificar</strong>
-		</div><br>
-		<div class="well col-lg-12">
-            		<form action="{{ route('vulnerabilidades.importar') }}" method="POST" enctype="multipart/form-data">
+    	    <div class="col-lg-4">
+                <div class="well col-lg-12">
+                    <strong>Serpico<br>Archivo json exportado sin modificar</strong>
+                </div>                
+                <div class="well col-lg-12">
+                    <span class="label label-danger">Cooming Soon</span><br>
+                    <strong>Faast<br>Archivo csv - columnas: </strong>
+                    <ul>
+                        <li>A definir...</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif                
+                <div class="well col-lg-12">
+                    <form class="form-horizontal" action="{{ route('vulnerabilidades.importar') }}" method="POST" enctype="multipart/form-data">
                 		{{ csrf_field() }}
-                		<div class="form col-lg-12">
-                    			<label class="col-lg-4" control-label>Tipo</label>
-                    			<select class="col-lg-4" name="tipo" id="tipo">
-	                	        	<option value="nessus">Nessus</option>
-						<option value="faast">Faast</option>
-        	   		             	<option value="serpico">Serpico</option>
-                	  		</select>
-                		</div>
-				<div class="col-lg-12">
-					<input type="file" class="form col-lg-12" name="fileToUpload" id="fileToUpload" required>
-				</div>
-                		<div class="col-lg-12">
-                    			<button class="btn btn-primary col-lg-4" type="submit"><span class="fa fa-plus" aria-hidden="true"></span> Importar</button>
-                		</div>
-            		</form>
-        	</div>
-    	    </div>
-	</div>
+                		<div class="form-group">
+        		          	<label for="tipo" class="col-lg-2 control-label">Tipo</label>
+                            <div class="col-lg-10">
+                    			<select class="form-control" name="tipo" id="tipo">
+                    	        	<option value="nessus">Nessus</option>
+    				        		<option value="faast">Faast</option>
+                                    <option value="serpico">Serpico</option>
+                                </select>
+                            </div>
+                        </div>
+				        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <input type="file" class="" name="fileToUpload" id="fileToUpload" required>
+                            </div>
+				        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button class="btn btn-sm btn-primary" type="submit"><span class="fa fa-plus" aria-hidden="true"></span> Importar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

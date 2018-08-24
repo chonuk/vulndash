@@ -10,7 +10,8 @@
     	<div class="input-group-addon">Responsable</div>
 		<input class="form-control" type="text" readonly value="{{ $plataforma->responsable }}"> 
 	</div>
-    <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
+	 <a class="btn btn-sm btn-warning" href="{{ route('plataformas.edit',$plataforma->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Plataforma"><span class="fa fa-edit"></span></a>
+    <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
   </div>
 </form>
 @endsection

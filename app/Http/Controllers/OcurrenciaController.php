@@ -16,17 +16,52 @@ class OcurrenciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request){
+        $sort = $request->input('sort'); 
+        $order = $request->input('order');
+
+        if($sort && $order) 
+        {
+            $ocurrencias = Ocurrencia::leftJoin('estados', 'estados_id','=', 'estados.id')
+                ->leftJoin('vulnerabilidades','vulnerabilidades_id','=', 'vulnerabilidades.id')
+                ->leftJoin('criticidades', 'vulnerabilidades.criticidad_id','=', 'criticidades.id')
+                ->leftJoin('activo_plataforma','activos_id','=','activo_plataforma.activo_id')
+                ->leftJoin('plataformas','activo_plataforma.plataforma_id','=','plataformas.id')
+                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre')
+                ->selectRaw('count(activos_id) as activos')
+                ->groupBy('vulnerabilidad_id','vulnerabilidad_nombre','plataforma_id','plataforma_nombre')
+                ->orderByRaw($sort.' COLLATE NOCASE '.$order)->sortable()->paginate(10);
+        $links = $ocurrencias->appends(['sort' => $sort, 'order' => $order])->links();
+        }
+        else
+        {
+            $ocurrencias = Ocurrencia::leftJoin('estados', 'estados_id','=', 'estados.id')
+                ->leftJoin('vulnerabilidades','vulnerabilidades_id','=', 'vulnerabilidades.id')
+                ->leftJoin('criticidades', 'vulnerabilidades.criticidad_id','=', 'criticidades.id')
+                ->leftJoin('activo_plataforma','activos_id','=','activo_plataforma.activo_id')
+                ->leftJoin('plataformas','activo_plataforma.plataforma_id','=','plataformas.id')
+                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre')
+                ->selectRaw('count(activos_id) as activos')
+                ->groupBy('vulnerabilidad_id','vulnerabilidad_nombre','plataforma_id','plataforma_nombre')
+                ->orderByRaw('criticidad_id desc, activos asc')->sortable()->paginate(10);
+            $links = $ocurrencias->links();
+        }
+#dd($ocurrencias);
+        return view('ocurrencias.index',compact('ocurrencias','links','sort','order'))
+                ->with('i', (request()->input('page', 1) - 1) * 1000);
+    }
+
+    public function index2(Request $request)
     {
         $sort = $request->input('sort'); 
         $order = $request->input('order');
 
         if($sort && $order) 
         {
-            $ocurrencias = Ocurrencia::with('vulnerabilidades.criticidad','estados')->sortable()->orderBy($sort, $order)->paginate(10);
+            $ocurrencias = Ocurrencia::with('vulnerabilidades.criticidad','estados','activos')->sortable()->orderBy($sort, $order)->paginate(10);
             $links = $ocurrencias->appends(['sort' => $sort, 'order' => $order])->links();
         }else{
-            $ocurrencias = Ocurrencia::with('vulnerabilidades.criticidad','estados')->orderBy('criticidad_id','desc')->sortable()->paginate(10);
+            $ocurrencias = Ocurrencia::with('vulnerabilidades.criticidad','estados','activos')->orderBy('criticidad_id','desc')->sortable()->paginate(10);
             $links = $ocurrencias->links();
         }
 

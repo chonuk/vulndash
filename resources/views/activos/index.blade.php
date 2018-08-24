@@ -1,28 +1,12 @@
 @extends('adminlte::page')
 @section('content')
-    @if ($message_ok = Session::get('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <p>{{ $message_ok }}</p>
-        </div>
-    @endif
-    @if ($message_error = Session::get('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <p>{!! $message_error !!}</p>
-        </div>
-    @endif
     <table class="table table-condensed table-hover" id="activos">
         <thead>
             <th>@sortablelink('ip')</th>
             <th>@sortablelink('hostname')</th>
             <th>@sortablelink('os')</th>
             <th>Plataformas</th>
-            <th>@sortablelink('vulnerabilidades_count','Vulnerabilidades')</th>
+            <th>@sortablelink('ocurrencias_count','Vulnerabilidades')</th>
             <th width="120px">Accion</th>
         </thead>
         <tbody>
@@ -38,7 +22,7 @@
                     <br>
                 @endforeach
             </td>
-            <td>{{ $activo->vulnerabilidades_count }}</td>
+            <td>{{ $activo->ocurrencias_count }}</td>
             <td>
                 <form action="{{ route('activos.destroy',$activo->id) }}" onsubmit="return ConfirmDelete()" method="POST">
                     <a class="btn btn-sm btn-info" href="{{ route('activos.show',$activo->id) }}" data-toggle="tooltip" data-placement="top" title="Ver Detalle"><span class="fa fa-info-circle"></span></a>

@@ -1,30 +1,13 @@
 @extends('adminlte::page')
 
 @section('content')
-    @if ($message_ok = Session::get('success'))
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <p>{{ $message_ok }}</p>
-        </div>
-    @endif
-    @if ($message_error = Session::get('error'))
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <p>{!! $message_error !!}</p>
-        </div>
-    @endif
     <table id="vulnerabilidades-table" class="table table-condensed table-striped table-bordered">
         <thead>
         <tr>
-            <th width="30%">@sortablelink('Nombre')</th>
+            <th>@sortablelink('Nombre')</th>
             <th>@sortablelink('criticidad_id','Criticidad')</th>
             <th>@sortablelink('Protocolo')</th>
             <th>@sortablelink('Exploit')</th>
-            <th width="30%">@sortablelink('CVE')</th>
             <th>@sortablelink('salida_parche','Salida Parche')</th>
             <th>Acciones</th>
         </tr>
@@ -36,7 +19,6 @@
             <td><span class="label label-{{ $vulnerabilidad->criticidad->color }}" >{{ $vulnerabilidad->criticidad->texto }}</span></td>
             <td>{{ $vulnerabilidad->protocolo }}</td>
             <td>{!! $vulnerabilidad->exploit ? '<span class="label label-danger">Si</span>' : '' !!}</td>
-            <td>{{ $vulnerabilidad->cve }}</td>
             <td>{{ $vulnerabilidad->salida_parche ? $vulnerabilidad->salida_parche->format('d/m/Y') : null }}</td>
             <td>
                  <form action="{{ route('vulnerabilidades.destroy',$vulnerabilidad->id) }}" onsubmit="return ConfirmDelete()" method="POST">

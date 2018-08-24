@@ -1,48 +1,35 @@
 @extends('adminlte::page')
-
-@section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Editar Plataforma</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-sm btn-default" href="{{ route('plataformas.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
-            </div>
+@section('content_header')
+@if ($errors->any())
+<div class="alert alert-danger">
+    <strong>Error!</strong> Hubo un problema con los datos ingresados.<br><br>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+<form class="form-inline" action="{{ route('plataformas.update',$plataforma->id) }}" method="POST">
+    @csrf
+    @method('PUT')
+    <div class="form-group">
+        <div class="input-group col-md">
+            <div class="input-group-addon">Nombre</div>
+            <input name="nombre" class="form-control" type="text" value="{{ $plataforma->nombre }}"> 
+        </div>            
+        <div class="input-group col-md">
+            <div class="input-group-addon">Responsable</div>
+            <input name="responsable" class="form-control" type="text" value="{{ $plataforma->responsable }}"> 
+        </div>        
+        <div class="input-group">
+            <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span>Editar</button>
+            <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
         </div>
     </div>
-
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Error!</strong> Hubo un problema con los datos ingresados.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-
-    <form class="form-inline" action="{{ route('plataformas.update',$plataforma->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        <div class="form-group col-lg-12 well well-sm">
-            <label for="nombre" class="col-lg-1" control-label">Nombre</label>
-            <div class="col-lg-3">
-                <input type="text" id="nombre" name="nombre" class="form-control" value="{{ $plataforma->nombre }}"placeholder="Nombre">
-            </div>
-            <label for="responsable" class="col-lg-1" control-label">Responsable</label>
-            <div class="col-lg-2">
-                 <input type="text" id="responsable" name="responsable" class="form-control" value="{{ $plataforma->responsable }}"placeholder="Responsable">
-            </div>
-            <div class="col-sm-1">
-                <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span>Editar</button>
-            </div>
-        </div>
-    </form>
-    <hr>
+</form>
+@endsection
+@section('content')
      <table class="table table-condensed table-hover" id="activos">
         <thead>
             <th>@sortablelink('ip')</th>

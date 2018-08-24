@@ -126,19 +126,26 @@ class VulnerabilidadController extends Controller
         if($request->hasFile('fileToUpload')){
 	    $cant = 0;
 	    $duplicadas = 0;
-	    dd($request->input);
             switch($request->input('tipo')){
-            case 'nesuss':
+            case 'faast':
+                request()->validate([
+                    'fileToUpload' => 'mimes:csv,txt'
+                ]);
+                $array_msg = ['error' => '<p><strong>Proximamente en sus Dashboards más cercanos</p>'];
+                return redirect()->route('vulnerabilidades.import')
+                        ->with($array_msg);
+                break;
+            case 'nessus':
+                request()->validate([
+                    'fileToUpload' => 'mimes:csv,txt'
+                ]);            
                 $path = $request->file('fileToUpload')->getRealPath();
                 $data = \Excel::load($path)->get();
+
                 if($data->count()){
                     foreach ($data as $key => $value) {
                         $cant++;
-                        //Busco activo existente o lo crea si no existe
-                        $activo = Activo::firstOrCreate(
-                            ['ip' => $value->ip_address ],
-                            ['hostname' => $value->dns_name ?? $value->netbios_name ]                        
-                        );
+
                         switch($value->severity)
                         {
                             case 'Medium':
@@ -167,7 +174,6 @@ class VulnerabilidadController extends Controller
                         }
                         else
                         {
-
                             $salida_parche = null;
                         }
                         try{
@@ -175,7 +181,7 @@ class VulnerabilidadController extends Controller
                             $ultima_deteccion = Carbon::createFromFormat('M j, Y H:i:s *', $value->last_observed,'America/Argentina/Buenos_Aires');
                         }
                         catch(\Exception $e){
-                            dd($e);
+                            
                         }
 
                         $vulnerabilidad = Vulnerabilidad::firstOrCreate(
@@ -194,28 +200,35 @@ class VulnerabilidadController extends Controller
                             ]
                         );
 
-                        $vulnerabilidad->activos()->syncWithoutDetaching([
-                            $activo->id => 
-                            [
-                                'puerto' => $value->port,
-                                'primer_deteccion' => $primer_deteccion,
-                                'ultima_deteccion' => $ultima_deteccion,
-                                'estados_id' => 4
-                            ]
-                        ]);
+                        if($value->ip_address){    
+                            //Busco activo existente o lo crea si no existe
+                            $activo = Activo::firstOrCreate(
+                                ['ip' => $value->ip_address ],
+                                ['hostname' => $value->dns_name ?? $value->netbios_name ]                        
+                            );
+
+                            $vulnerabilidad->activos()->syncWithoutDetaching([
+                                $activo->id => 
+                                [
+                                    'puerto' => $value->port,
+                                    'primer_deteccion' => $primer_deteccion,
+                                    'ultima_deteccion' => $ultima_deteccion,
+                                    'estados_id' => 4
+                                ]
+                            ]);
+                        }
                     } 
                 }
                 break;
 
             case 'serpico':
+                request()->validate([
+                    'fileToUpload' => 'mimes:json,txt'
+                ]);            
                 $path = $request->file('fileToUpload')->store('upload');
-            
                 $json = \Storage::disk('local')->get($path);
-
                 \Storage::disk('local')->delete('$path');
-
                 $vulnerabilidades = json_decode($json);
-
                 foreach ($vulnerabilidades as $vulnerabilidad) {
                     //Solo criticidades Criticas, Altas y Medias
                     if($vulnerabilidad->risk < 2){

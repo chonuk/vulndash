@@ -7,15 +7,15 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 @section('content_header')
 <form class="form-inline">
   <div class="form-group">
-	<div class="input-group col-md">
+	<div class="input-group col-md-2">
     	<div class="input-group-addon">Ip</div>
 		<input class="form-control" type="text" readonly value="{{ $activo->ip }}"> 
 	</div>
-	<div class="input-group">
+	<div class="input-group col-md-3">
     	<div class="input-group-addon">Hostname</div>
 		<input class="form-control" type="text" readonly value="{{ $activo->hostname }}"> 
 	</div>
-	<div class="input-group">
+	<div class="input-group col-md-3">
     	<div class="input-group-addon">S.O.</div>
 		<input class="form-control" type="text" readonly value="{{ $activo->os }}"> 
 	</div>
@@ -25,7 +25,7 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 	<a class="btn btn-sm btn-default" href="{{ route('plataformas.show',$plataforma->id) }}" >{{ $plataforma->nombre }}</a>
 	@endforeach
 	</div>
-    <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
+    <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
   </div>
 </form>
 @endsection
@@ -40,16 +40,16 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 	</thead>
 	<tbody>
 
-	@foreach($activo->vulnerabilidades as $vulnerabilidad)
+	@foreach($activo->ocurrencias as $ocurrencia)
 		<tr>
-			<td>{{ $vulnerabilidad->vulnsinfra->nombre }}</td>
-			<td><span class="label label-{{ $vulnerabilidad->vulnsinfra->criticidad->color }}" >{{ $vulnerabilidad->vulnsinfra->criticidad->texto }}</span></td>
-			<td>@if($vulnerabilidad->vulnsinfra->exploit)
+			<td>{{ $ocurrencia->vulnerabilidades->nombre }}</td>
+			<td><span class="label label-{{ $ocurrencia->vulnerabilidades->criticidad->color }}" >{{ $ocurrencia->vulnerabilidades->criticidad->texto }}</span></td>
+			<td>@if($ocurrencia->vulnerabilidades->exploit)
                     <span class="label label-danger">Disponible</span>
                 @endif
 			</td>
-			<td>{{ $vulnerabilidad->primer_deteccion }}</td>
-			<td><span class="label label-{{ $vulnerabilidad->estados->color }}" >{{ $vulnerabilidad->estados->texto }}</span></td>
+			<td>{{ $ocurrencia->primer_deteccion }}</td>
+			<td><span class="label label-{{ $ocurrencia->estados->color }}" >{{ $ocurrencia->estados->texto }}</span></td>
 		</tr>
 	@endforeach
 	</tbody>

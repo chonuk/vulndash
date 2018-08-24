@@ -106,10 +106,10 @@ class PlataformaController extends Controller
         
         if($sort && $order) 
         {
-            $activos = $plataforma->activos()->sortable()->orderBy($sort, $order)->paginate(7);
+            $activos = $plataforma->activos()->sortable()->orderBy($sort, $order)->paginate(10);
             $links = $activos->appends(['sort' => $sort, 'order' => $order])->links();
         }else{
-            $activos = $plataforma->activos()->orderBy('ip','asc')->sortable()->paginate(7);
+            $activos = $plataforma->activos()->orderBy('ip','asc')->sortable()->paginate(10);
             $links = $activos->links();
         }
 

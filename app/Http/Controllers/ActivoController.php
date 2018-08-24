@@ -148,7 +148,7 @@ class ActivoController extends Controller
                         continue;
                     }
                     //Busco activo existente o lo crea si no existe
-                    $activo = Activo::firstOrCreate(
+                    $activo = Activo::updateOrCreate(
                         ['ip' => $value->ip],
                         ['hostname' => $value->hostname, 'os' => $value->os]                        
                     );

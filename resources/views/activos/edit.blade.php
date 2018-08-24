@@ -7,7 +7,7 @@
                 <h2>Editar Activo</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-sm btn-default" href="{{ route('activos.index') }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+                <a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
             </div>
         </div>
     </div>
