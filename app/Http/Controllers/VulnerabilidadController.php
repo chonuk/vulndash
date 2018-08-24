@@ -126,11 +126,11 @@ class VulnerabilidadController extends Controller
         if($request->hasFile('fileToUpload')){
 	    $cant = 0;
 	    $duplicadas = 0;
+	    dd($request->input);
             switch($request->input('tipo')){
             case 'nesuss':
                 $path = $request->file('fileToUpload')->getRealPath();
                 $data = \Excel::load($path)->get();
-dd($data);
                 if($data->count()){
                     foreach ($data as $key => $value) {
                         $cant++;

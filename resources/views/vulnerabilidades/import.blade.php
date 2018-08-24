@@ -11,50 +11,61 @@
             </div>
         </div>
         <div class="col-lg-12">
-            <div class="well col-lg-4">
-                <strong>Formato: </strong>
+            <div class="col-lg-4">
+		<div class="well col-lg-12">
+                <strong>Nessus Security Center<br>CSV - columnas: </strong>
                 <ul>
-                    <li>json (exportado desde Serpico)</li>
-                    <li>o</li>
-                    <li>csv (exportado de Nessus Security Center)<br>
-                        <strong>Columnas: </strong>
-                        <ul>
-                            <li>Plugin</li>
-                            <li>Plugin Name</li>
-                            <li>Severity</li>
-                            <li>Ip Address</li>
-                            <li>Protocol</li>
-                            <li>Port</li>
-                            <li>Exploit</li>
-                            <li>DNS Name</li>
-                            <li>NetBIOS Name</li>
-                            <li>Plugin Text</li>
-                            <li>Synopsis</li>
-                            <li>Description</li>
-                            <li>Solution</li>
-                            <li>See Also</li>
-                            <li>CVE</li>
-                            <li>First Discovered</li>
-                            <li>Last Observed</li>
-                            <li>Patch Publication Date</li>
-                        </ul>
-                    </li>
+                	<li>Plugin</li>
+                        <li>Plugin Name</li>
+                        <li>Severity</li>
+                        <li>Ip Address</li>
+                        <li>Protocol</li>
+                        <li>Port</li>
+                        <li>Exploit</li>
+                        <li>DNS Name</li>
+                        <li>NetBIOS Name</li>
+                        <li>Synopsis</li>
+                        <li>Description</li>
+                        <li>Solution</li>
+                        <li>See Also</li>
+                        <li>CVE</li>
+                        <li>First Discovered</li>
+                        <li>Last Observed</li>
+                        <li>Patch Publication Date</li>
                 </ul>
+		</div>
             </div>            
-            <form action="{{ route('vulnerabilidades.importar') }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <input type="file" class="form well col-lg-5 col-lg-offset-1" name="fileToUpload" id="fileToUpload" required>
-                <div class="form well col-lg-5 col-lg-offset-1">
-                    <label class="col-lg-2" control-label>Tipo</label>
-                    <select name="tipo" id="tipo">
-                        <option value="nessus">Nessus</option>
-                        <option value="serpico">Serpico</option>
-                    </select>
-                </div>
-                <div class="col-lg-4 col-lg-offset-1">
-                    <button class="btn btn-sm btn-primary" type="submit"><span class="fa fa-plus" aria-hidden="true"></span> Importar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+	    <div class="col-lg-4">
+		<div class="well col-lg-12">
+		<strong>Faast<br>CSV - columnas: </strong>
+                <ul>
+			<li>A definir</li>
+		</ul>
+		</div>
+	    </div>
+	    <div class="col-lg-4">
+		<div class="well col-lg-12">
+	    		<strong>Serpico<br>Json exportado sin modificar</strong>
+		</div><br>
+		<div class="well col-lg-12">
+            		<form action="{{ route('vulnerabilidades.importar') }}" method="POST" enctype="multipart/form-data">
+                		{{ csrf_field() }}
+                		<div class="form col-lg-12">
+                    			<label class="col-lg-4" control-label>Tipo</label>
+                    			<select class="col-lg-4" name="tipo" id="tipo">
+	                	        	<option value="nessus">Nessus</option>
+						<option value="faast">Faast</option>
+        	   		             	<option value="serpico">Serpico</option>
+                	  		</select>
+                		</div>
+				<div class="col-lg-12">
+					<input type="file" class="form col-lg-12" name="fileToUpload" id="fileToUpload" required>
+				</div>
+                		<div class="col-lg-12">
+                    			<button class="btn btn-primary col-lg-4" type="submit"><span class="fa fa-plus" aria-hidden="true"></span> Importar</button>
+                		</div>
+            		</form>
+        	</div>
+    	    </div>
+	</div>
 @endsection
