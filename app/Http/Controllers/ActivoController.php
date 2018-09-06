@@ -63,8 +63,7 @@ class ActivoController extends Controller
 
     public function show($id)
     {
-        $activo = Activo::with('ocurrencias.vulnerabilidades.criticidad','plataformas')->find($id);
-
+        $activo = Activo::with('ocurrencias.vulnerabilidades.criticidad','plataformas')->sortable()->find($id);
         return view('activos.show',compact('activo'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
 

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Kyslik\ColumnSortable\Sortable;
+use App\Ocurrencia;
 
 class Plataforma extends Model
 {

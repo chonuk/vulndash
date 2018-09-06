@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('content')
+@section('content_header')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
@@ -12,7 +12,8 @@
         </div>
     </div>
 
-
+@endsection
+@section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Error!</strong> Hubo un problema con los datos ingresados.<br><br>

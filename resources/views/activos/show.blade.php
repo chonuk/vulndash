@@ -1,10 +1,6 @@
 @extends('adminlte::page')
-@section('css')
-<style>
-table, thead,tbody,th,td { border: 1px solid blue !important;}
-</style>
-@endsection
 @section('content_header')
+
 <form class="form-inline">
   <div class="form-group">
 	<div class="input-group col-md-2">
@@ -26,6 +22,7 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
 	@endforeach
 	</div>
     <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
+	<a class="pull-right btn btn-sm btn-warning" href="{{ route('activos.edit',$activo->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Activo"><span class="fa fa-edit"></span> Editar</a>
   </div>
 </form>
 @endsection
@@ -48,7 +45,7 @@ table, thead,tbody,th,td { border: 1px solid blue !important;}
                     <span class="label label-danger">Disponible</span>
                 @endif
 			</td>
-			<td>{{ $ocurrencia->primer_deteccion }}</td>
+			<td>{{ $ocurrencia->primer_deteccion->format('d/m/Y') }}</td>
 			<td><span class="label label-{{ $ocurrencia->estados->color }}" >{{ $ocurrencia->estados->texto }}</span></td>
 		</tr>
 	@endforeach

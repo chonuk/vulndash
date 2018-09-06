@@ -15,9 +15,9 @@
         		<div class="well col-lg-12">
                     <strong>Nessus Security Center<br>Archivo csv - columnas: </strong>
                     <ul>
-                    	<li><strong>Plugin</strong></li>
-                        <li><strong>Plugin Name</strong></li>
-                        <li><strong>Severity</strong></li>
+                    	<li><strong>Plugin *</strong></li>
+                        <li><strong>Plugin Name *</strong></li>
+                        <li><strong>Severity *</strong></li>
                         <li>Ip Address</li>
                         <li>Protocol</li>
                         <li>Port</li>
@@ -25,7 +25,7 @@
                         <li>DNS Name</li>
                         <li>NetBIOS Name</li>
                         <li>Synopsis</li>
-                        <li><strong>Description</strong></li>
+                        <li><strong>Description *</strong></li>
                         <li>Solution</li>
                         <li>See Also</li>
                         <li>CVE</li>
@@ -33,6 +33,7 @@
                         <li>Last Observed</li>
                         <li>Patch Publication Date</li>
                     </ul>
+                    <strong>* Requeridos</strong>
         		</div>
             </div>            
     	    <div class="col-lg-4">

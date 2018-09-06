@@ -1,16 +1,18 @@
 @extends('adminlte::page')
 
-@section('content')
-    <div class="col-lg-12">
-        <div class="col-lg-6">
-            <h3>Editar</h3>
+@section('content_header')
+    <div class="col-lg-12 margin-tb panel panel-heading">
+        <div class="pull-left">
+           <h4>Editar {{ $vulnerabilidad->nombre }}</h4>
         </div>
         <div class="pull-right">
+            <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span> Guardar</button>
             <a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
         </div>
     </div>
 
-
+@endsection
+@section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Error!</strong> Hubo un problema con los datos ingresados.<br><br>
@@ -21,7 +23,6 @@
             </ul>
         </div>
     @endif
-
 
     <form class="form-horizontal" action="{{ route('vulnerabilidades.update',$vulnerabilidad->id) }}" method="POST">
         @csrf
@@ -64,13 +65,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="cve" class="col-lg-2 col-lg-offset-1" control-label>CVE</label>
-            <div class="col-lg-2">
-                <input type="text" id="cve" name="cve" class="form-control" value="{{ $vulnerabilidad->cve }}" placeholder="CVE">
-            </div> 
             <label for="salida_parche" class="col-lg-2 col-lg-offset-1" control-label>Salida Parche</label>
             <div class="col-lg-2">
-                <input type="date" id="salida_parche" name="salida_parche" class="form-control" value="{{ $vulnerabilidad->salida_parche }}" placeholder="Fecha Salida Parche">
+                @if($vulnerabilidad->salida_parche)
+                    <input type="date" id="salida_parche" name="salida_parche" class="form-control" value="{{ $vulnerabilidad->salida_parche->format('Y-m-d') }}" placeholder="Fecha Salida Parche">
+                @else
+                    <input type="date" id="salida_parche" name="salida_parche" class="form-control" value="">
+                @endif
             </div>             
         </div>
         <div class="form-group">
@@ -92,14 +93,15 @@
             </div>
         </div>            
         <div class="form-group">
+            <label for="cve" class="col-lg-2 col-lg-offset-1" control-label>CVE</label>
+            <div class="col-lg-7">
+                <textarea class="form-control" name="cve" id="cve" placeholder="CVE">{{ $vulnerabilidad->cve }}</textarea>
+            </div> 
+        </div>
+        <div class="form-group">
             <label for="referencias" class="col-lg-2 col-lg-offset-1" control-label>Referencias</label>
             <div class="col-lg-7">
                 <textarea class="form-control" style="height:80px" name="referencias" id="referencias" placeholder="Referencias">{{ $vulnerabilidad->referencias }}</textarea>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span>Editar</button>
             </div>
         </div>
     </form>
