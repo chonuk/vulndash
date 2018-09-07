@@ -1,5 +1,20 @@
 @extends('adminlte::page')
 
+@section('searchbar')
+<form action="{{ route('plataformas.index') }}" class="form-inline" method="GET" role="search">
+    <div class="form-group">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" name="q" placeholder="Plataforma o Responsable..." value="{{ $q }}">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+@endsection
+
 @section('content')
 <table class="table table-condensed table-striped table-bordered">
 	<thead>

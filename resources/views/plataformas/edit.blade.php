@@ -10,27 +10,28 @@
     </ul>
 </div>
 @endif
+<div class="col-lg-12 margin-tb panel panel-heading">
 <form class="form-inline" action="{{ route('plataformas.update',$plataforma->id) }}" method="POST">
     @csrf
     @method('PUT')
     <div class="form-group">
-        <div class="input-group col-md">
+        <div class="input-group">
             <div class="input-group-addon">Nombre</div>
             <input name="nombre" class="form-control" type="text" value="{{ $plataforma->nombre }}"> 
         </div>            
-        <div class="input-group col-md">
+        <div class="input-group">
             <div class="input-group-addon">Responsable</div>
             <input name="responsable" class="form-control" type="text" value="{{ $plataforma->responsable }}"> 
         </div>        
-        <div class="input-group">
-            <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span>Editar</button>
-            <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
-        </div>
     </div>
-</form>
+        <div class="pull-right">
+            <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span> Grabar</button>
+            <a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+        </div>
+</form></div>
 @endsection
 @section('content')
-     <table class="table table-condensed table-hover" id="activos">
+     <table class="table table-condensed table-striped" id="activos">
         <thead>
             <th>@sortablelink('ip')</th>
             <th>@sortablelink('hostname')</th>

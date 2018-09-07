@@ -1,5 +1,19 @@
 @extends('adminlte::page')
 
+@section('searchbar')
+<form action="{{ route('vulnerabilidades.index') }}" class="form-inline" method="GET" role="search">
+    <div class="form-group">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" name="q" placeholder="Nombre, CVE o descripcion..." value="{{ $q }}">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+@endsection
 @section('content')
     <table id="vulnerabilidades-table" class="table table-condensed table-striped table-bordered">
         <thead>
@@ -33,6 +47,7 @@
         @endforeach
         </tbody>
     </table>
+    <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="col-lg-6">
             <a class="btn btn-sm btn-info" href="{{ route('vulnerabilidades.import') }}"> Importar Vulnerabilidades</a>
@@ -41,6 +56,7 @@
             {!! $links !!}
         </div>
     </div>
+</div>
 @endsection
 @section('js')
 <script>

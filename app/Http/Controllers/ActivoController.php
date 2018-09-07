@@ -17,17 +17,26 @@ class ActivoController extends Controller
     {
         $sort = $request->input('sort'); 
         $order = $request->input('order');
+        $q = $request->input('q');
+
+        $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('ocurrencias');
+
+        if($q)
+        {
+            $activos = $activos->where('ip','like','%'.$q.'%')
+                                    ->orWhere('hostname','like','%'.$q.'%');
+        }
 
         if($sort && $order) 
         {
-            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('ocurrencias')->sortable()->orderBy($sort, $order)->paginate(10);
-            $links = $activos->appends(['sort' => $sort, 'order' => $order])->links();
+            $activos = $activos->sortable()->orderBy($sort, $order)->paginate(10);
+            $links = $activos->appends(['sort' => $sort, 'order' => $order, 'q' => $q])->links();
         }else{
-            $activos = Activo::with('plataformas:plataforma_id,nombre')->withCount('ocurrencias')->orderBy('hostname','asc')->sortable()->paginate(10);
-            $links = $activos->links();
+            $activos = $activos->orderBy('hostname','asc')->sortable()->paginate(10);
+            $links = $activos->appends(['q' => $q])->links();
         }
 
-        return view('activos.index',compact('activos','links','sort','order'))
+        return view('activos.index',compact('activos','links','sort','order','q'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -63,9 +72,9 @@ class ActivoController extends Controller
 
     public function show($id)
     {
-        $activo = Activo::with('ocurrencias.vulnerabilidades.criticidad','plataformas')->sortable()->find($id);
-        return view('activos.show',compact('activo'))
-            ->with('i', (request()->input('page', 1) - 1) * 10);
+        $activo = Activo::find($id);
+        $ocurrencias = $activo->ocurrencias()->with('vulnerabilidades.criticidad')->sortable()->get();
+        return view('activos.show',compact('activo','ocurrencias'));
 
     }
 
@@ -100,7 +109,7 @@ class ActivoController extends Controller
         $activo->plataformas()->sync($request->get('plataformas'));
 
         return redirect()->route('activos.index')
-                        ->with('success','Activo actualizado');
+                        ->with('success','Activo '. $activo->hostname.' ('.$activo->ip.') actualizado');
     }
 
     /**

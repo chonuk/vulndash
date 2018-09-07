@@ -1,4 +1,20 @@
 @extends('adminlte::page')
+
+@section('searchbar')
+<form action="{{ route('activos.index') }}" class="form-inline" method="GET" role="search">
+    <div class="form-group">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" name="q" placeholder="IP u hostname..." value="{{ $q }}">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+@endsection
+
 @section('content')
     <table class="table table-condensed table-hover" id="activos">
         <thead>
@@ -36,6 +52,7 @@
         @endforeach
         </tbody>
     </table>
+    <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="col-lg-6">
             <a class="btn btn-sm btn-success" href="{{ route('activos.create') }}"> Agregar Activo</a>&nbsp;
@@ -45,6 +62,7 @@
             {!! $links !!}
         </div>
     </div>
+</div>
 @endsection
 @section('js')
 <script>

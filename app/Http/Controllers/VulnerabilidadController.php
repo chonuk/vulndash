@@ -20,17 +20,26 @@ class VulnerabilidadController extends Controller
     {
         $sort = $request->input('sort'); 
         $order = $request->input('order');
+        $q = $request->input('q');
+
+        $vulnerabilidades = Vulnerabilidad::with('criticidad');
+
+        if($q)
+        {
+            $vulnerabilidades = $vulnerabilidades->where('nombre','like','%'.$q.'%')
+                                    ->orWhere('descripcion','like','%'.$q.'%')
+                                    ->orWhere('cve','like','%'.$q.'%');
+        }
 
         if($sort && $order) 
         {
-            $vulnerabilidades = Vulnerabilidad::with('criticidad')->sortable()->orderBy($sort, $order)->paginate(10);
-            $links = $vulnerabilidades->appends(['sort' => $sort, 'order' => $order])->links();
+            $vulnerabilidades = $vulnerabilidades->orderBy($sort, $order)->sortable()->paginate(10);
+            $links = $vulnerabilidades->appends(['sort' => $sort, 'order' => $order, 'q' => $q])->links();
         }else{
-            $vulnerabilidades = Vulnerabilidad::with('criticidad')->orderBy('criticidad_id','desc')->sortable()->paginate(10);
-            $links = $vulnerabilidades->links();
+            $vulnerabilidades = $vulnerabilidades->orderBy('criticidad_id','desc')->sortable()->paginate(10);
+            $links = $vulnerabilidades->appends(['q' => $q])->links();
         }
-
-        return view('vulnerabilidades.index',compact('vulnerabilidades','links','sort','order'))
+        return view('vulnerabilidades.index',compact('vulnerabilidades','links','sort','order','q'))
             ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 

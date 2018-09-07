@@ -57,10 +57,12 @@
                     <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                 </a>
             @endif
-                <!-- Navbar Right Menu -->
+               <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
-
                     <ul class="nav navbar-nav">
+                        <li style="padding: 5px;">
+                            @yield('searchbar')
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

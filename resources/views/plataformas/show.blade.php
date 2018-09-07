@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 @section('content_header')
+<div class="col-lg-12 margin-tb panel panel-heading">
 <form class="form-inline">
   <div class="form-group">
 	<div class="input-group col-md">
@@ -10,13 +11,16 @@
     	<div class="input-group-addon">Responsable</div>
 		<input class="form-control" type="text" readonly value="{{ $plataforma->responsable }}"> 
 	</div>
-	 <a class="btn btn-sm btn-warning" href="{{ route('plataformas.edit',$plataforma->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Plataforma"><span class="fa fa-edit"></span></a>
-    <span class="col-lg-1 pull-right"><a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a></span>
   </div>
+  <div class="pull-right">
+	<a class="btn btn-sm btn-warning" href="{{ route('plataformas.edit',$plataforma->id) }}" data-toggle="tooltip" data-placement="top" title="Editar Plataforma"><span class="fa fa-edit"></span> Editar</a>
+	<a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+</div>
 </form>
+</div>
 @endsection
 @section('content')
-<table class="table table-condensed table-striped table-borde">
+<table class="table table-condensed table-striped">
 	<thead>
 		<th>Nombre</th>
 		<th>Criticidad</th>

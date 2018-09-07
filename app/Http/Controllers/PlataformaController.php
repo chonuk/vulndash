@@ -18,31 +18,33 @@ class PlataformaController extends Controller
     {
         $sort = $request->input('sort'); 
         $order = $request->input('order');
+        $q = $request->input('q');
+
+        $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
+                    ->leftJoin('ocurrencias','activo_plataforma.activo_id','=','ocurrencias.activos_id')
+                        ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
+                        ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
+                    ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
+                    ->selectRaw('count(distinct activo_plataforma.activo_id) as activos');
+        
+        if($q)
+        {
+            $plataformas = $plataformas->where('nombre','like','%'.$q.'%')
+                                        ->orWhere('responsable','like','%'.$q.'%');
+        }
 
         if($sort && $order) 
         {
-            $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
-                    ->leftJoin('ocurrencias','activo_plataforma.activo_id','=','ocurrencias.activos_id')
-                        ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
-                        ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
-                    ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
-                    ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
-                    ->orderByRaw($sort.' COLLATE NOCASE '.$order)->sortable()->paginate(12);
-            $links = $plataformas->appends(['sort' => $sort, 'order' => $order])->links();
+            $plataformas = $plataformas->orderByRaw($sort.' COLLATE NOCASE '.$order)->sortable()->paginate(10);
+            $links = $plataformas->appends(['sort' => $sort, 'order' => $order, 'q' => $q])->links();
         }
         else
         {
-            $plataformas = Plataforma::leftJoin('activo_plataforma','plataformas.id','=','activo_plataforma.plataforma_id')
-                    ->leftJoin('ocurrencias','activo_plataforma.activo_id','=','ocurrencias.activos_id')
-                        ->groupBy('plataformas.id','plataformas.nombre','plataformas.responsable')
-                        ->select('plataformas.id','plataformas.nombre','plataformas.responsable')
-                    ->selectRaw('count(ocurrencias.vulnerabilidades_id) as vulnerabilidades')
-                    ->selectRaw('count(distinct activo_plataforma.activo_id) as activos')
-                    ->orderByRaw('nombre COLLATE NOCASE asc')->sortable()->paginate(12);
-            $links = $plataformas->links();
+            $plataformas = $plataformas->orderByRaw('nombre COLLATE NOCASE asc')->sortable()->paginate(10);
+            $links = $plataformas->appends(['q' => $q])->links();
         }
 
-        return view('plataformas.index',compact('plataformas','links','sort','order'))
+        return view('plataformas.index',compact('plataformas','links','sort','order','q'))
                 ->with('i', (request()->input('page', 1) - 1) * 10);
 
     }

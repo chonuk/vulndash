@@ -6,8 +6,7 @@
            <h4>Editar {{ $vulnerabilidad->nombre }}</h4>
         </div>
         <div class="pull-right">
-            <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span> Guardar</button>
-            <a class="btn btn-sm btn-default" href="{{ URL::previous() }}"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
+            <a class="btn btn-sm btn-default" href="javascript:history.back()"><span class="fa fa-chevron-circle-left" aria-hidden="true"></span> Volver</a>
         </div>
     </div>
 
@@ -27,7 +26,7 @@
     <form class="form-horizontal" action="{{ route('vulnerabilidades.update',$vulnerabilidad->id) }}" method="POST">
         @csrf
         @method('PUT')
-	<input type="hidden" name="plugin" value="{{ $vulnerabilidad->plugin }}">
+    <input type="hidden" name="plugin" value="{{ $vulnerabilidad->plugin }}">
         <div class="form-group">
             <label for="nombre" class="col-lg-2 col-lg-offset-1" control-label>Nombre</label>
             <div class="col-lg-7">
@@ -50,7 +49,7 @@
             <label for="exploit" class="col-lg-1" control-label>Exploit?</label>
             <div class="col-lg-2">
                 <select name="exploit" id="exploit">
-		    <option></option>
+            <option></option>
                     <option value="1" {{ $vulnerabilidad->exploit === '1' ? 'selected' : '' }}>Si</option>
                     <option value="0" {{ $vulnerabilidad->exploit === '0' ? 'selected' : '' }}>No</option>
                  </select>
@@ -58,7 +57,7 @@
             <label for="protocolo" class="col-lg-1" control-label>Protocolo</label>
             <div class="col-lg-1">
                 <select name="protocolo" id="protocolo">
-		    <option></option>
+            <option></option>
                     <option value="TCP" {{ $vulnerabilidad->protocolo === 'TCP' ? 'selected' : '' }}>TCP</option>
                     <option value="UDP" {{ $vulnerabilidad->protocolo === 'UDP' ? 'selected' : '' }}>UDP</option>
                  </select>
@@ -103,6 +102,9 @@
             <div class="col-lg-7">
                 <textarea class="form-control" style="height:80px" name="referencias" id="referencias" placeholder="Referencias">{{ $vulnerabilidad->referencias }}</textarea>
             </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="col-lg-1 col-lg-offset-11 btn btn-sm btn-success"><span class="fa fa-plus" aria-hidden="true"></span> Guardar</button>
         </div>
     </form>
 
