@@ -25,11 +25,10 @@ class OcurrenciaController extends Controller
             $ocurrencias = Ocurrencia::leftJoin('estados', 'estados_id','=', 'estados.id')
                 ->leftJoin('vulnerabilidades','vulnerabilidades_id','=', 'vulnerabilidades.id')
                 ->leftJoin('criticidades', 'vulnerabilidades.criticidad_id','=', 'criticidades.id')
-                ->leftJoin('activo_plataforma','activos_id','=','activo_plataforma.activo_id')
+                ->leftJoin('activos','activos_id','=','activos.id')
+                ->leftJoin('activo_plataforma','activos.id','=','activo_plataforma.activo_id')
                 ->leftJoin('plataformas','activo_plataforma.plataforma_id','=','plataformas.id')
-                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre')
-                ->selectRaw('count(activos_id) as activos')
-                ->groupBy('vulnerabilidad_id','vulnerabilidad_nombre','plataforma_id','plataforma_nombre')
+                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre', 'activos.ip as activo_ip', 'activos.hostname as activo_hostname')
                 ->orderByRaw($sort.' COLLATE NOCASE '.$order)->sortable()->paginate(10);
         $links = $ocurrencias->appends(['sort' => $sort, 'order' => $order])->links();
         }
@@ -38,15 +37,14 @@ class OcurrenciaController extends Controller
             $ocurrencias = Ocurrencia::leftJoin('estados', 'estados_id','=', 'estados.id')
                 ->leftJoin('vulnerabilidades','vulnerabilidades_id','=', 'vulnerabilidades.id')
                 ->leftJoin('criticidades', 'vulnerabilidades.criticidad_id','=', 'criticidades.id')
-                ->leftJoin('activo_plataforma','activos_id','=','activo_plataforma.activo_id')
+                ->leftJoin('activos','activos_id','=','activos.id')
+                ->leftJoin('activo_plataforma','activos.id','=','activo_plataforma.activo_id')
                 ->leftJoin('plataformas','activo_plataforma.plataforma_id','=','plataformas.id')
-                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre')
-                ->selectRaw('count(activos_id) as activos')
-                ->groupBy('vulnerabilidad_id','vulnerabilidad_nombre','plataforma_id','plataforma_nombre')
-                ->orderByRaw('criticidad_id desc, activos asc')->sortable()->paginate(10);
+                ->select('ocurrencias.id','vulnerabilidades.id as vulnerabilidad_id','vulnerabilidades.nombre as vulnerabilidad_nombre','criticidad_id','criticidades.texto as criticidad_texto', 'criticidades.color as criticidad_color', 'estados.texto as estado_texto','estados.color as estado_color','plataformas.id as plataforma_id', 'plataformas.nombre as plataforma_nombre','activos.ip as activo_ip', 'activos.hostname as activo_hostname')
+                ->orderByRaw('criticidad_id desc')->sortable()->paginate(10);
             $links = $ocurrencias->links();
         }
-#dd($ocurrencias);
+
         return view('ocurrencias.index',compact('ocurrencias','links','sort','order'))
                 ->with('i', (request()->input('page', 1) - 1) * 1000);
     }

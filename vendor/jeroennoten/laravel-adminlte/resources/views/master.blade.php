@@ -39,7 +39,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition @yield('body_class')">
-
+  <script>
+    (function () {
+      if (Boolean(sessionStorage.getItem('sidebar-toggle-collapsed'))) {
+        var body = document.getElementsByTagName('body')[0];
+        body.className = body.className + ' sidebar-collapse';
+      }
+    })();
+  </script>
 @yield('body')
 
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.min.js') }}"></script>
