@@ -23,7 +23,7 @@
             <th>@sortablelink('Protocolo')</th>
             <th>@sortablelink('Exploit')</th>
             <th>@sortablelink('salida_parche','Salida Parche')</th>
-            <th>Acciones</th>
+            <th width="120px">Acciones</th>
         </tr>
         </thead>
         <tbody>

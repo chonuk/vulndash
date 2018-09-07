@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Contraseña incorrecto o acceso no permitido',
+    'failed' => 'Contraseña incorrecta o acceso no permitido',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

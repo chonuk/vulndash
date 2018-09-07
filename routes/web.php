@@ -10,26 +10,26 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('vulnerabilidades/import', 'VulnerabilidadController@import')->name('vulnerabilidades.import')->middleware('auth','role:admin');
-Route::post('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar')->middleware('auth','role:admin');
-Route::resource('vulnerabilidades','VulnerabilidadController')->middleware('auth','role:admin');
-
-Route::get('plataformas/import', 'PlataformaController@import')->name('plataformas.import')->middleware('auth','role:admin');
-Route::post('plataformas/importar', 'PlataformaController@importar')->name('plataformas.importar')->middleware('auth','role:admin');
-Route::post('plataformas/{id}/detach', 'PlataformaController@detach')->name('plataformas.detach')->middleware('auth','role:admin');
-Route::resource('plataformas','PlataformaController')->middleware('auth','role:admin');
-
-Route::get('activos/import', 'ActivoController@import')->name('activos.import')->middleware('auth','role:admin');
-Route::post('activos/importar', 'ActivoController@importar')->name('activos.importar')->middleware('auth','role:admin');
-Route::resource('activos','ActivoController')->middleware('auth','role:admin');
-
-#Route::post('import-file', 'ExcelController@importFile')->name('import.file')->middleware('auth');
-#Route::get('export-file/{type}', 'ExcelController@exportFile')->name('export.file')->middleware('auth');
-
+// Ruta de Visualizacion general
 Route::resource('ocurrencias','OcurrenciaController')->middleware('auth');
 
-Auth::routes();
+// Rutas de administracion
+Route::middleware(['auth','role:admin'])->group(function ()
+{
+	Route::get('activos/import', 'ActivoController@import')->name('activos.import');
+	Route::post('activos/importar', 'ActivoController@importar')->name('activos.importar');
+	Route::resource('activos','ActivoController');
 
-Route::get('/', 'HomeController@index')->name('home')->middleware('auth');;
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+	Route::get('plataformas/import', 'PlataformaController@import')->name('plataformas.import');
+	Route::post('plataformas/importar', 'PlataformaController@importar')->name('plataformas.importar');
+	Route::post('plataformas/{id}/detach', 'PlataformaController@detach')->name('plataformas.detach');
+	Route::resource('plataformas','PlataformaController');
+
+	Route::get('vulnerabilidades/import', 'VulnerabilidadController@import')->name('vulnerabilidades.import');
+	Route::post('vulnerabilidades/importar', 'VulnerabilidadController@importar')->name('vulnerabilidades.importar');
+	Route::resource('vulnerabilidades','VulnerabilidadController');
+});

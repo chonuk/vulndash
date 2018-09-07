@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'blue',
+    'skin' => 'red',
 
     /*
     |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => true,
+    'collapse_sidebar' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -110,57 +110,26 @@ return [
     'menu' => [
         'VULNERABILIDADES',
         [
-            'text'  => 'Ocurrencias',
-            'icon'  => 'exclamation-circle',
+            'text'  =>  'Por Vulnerabilidad',
+            'icon'  =>  'exclamation-triangle',
             'icon_color' => 'red',
-            'submenu' =>
-            [
-                [
-                    'text'  =>  'Por Vulnerabilidad',
-                    'icon'  =>  'exclamation-triangle',
-                    'icon_color' => 'white',
-                    'url'     => 'ocurrencias',
-                    'active' => ['ocurrencias*'],
-                ],
-                [                
-                    'text'  => 'Por Criticidad',
-                    'icon'  => 'list-ol',
-                    'icon_color' => 'white',
-                    'submenu' =>
-                    [
-                        [
-                            'text'  => 'Criticas',
-                            'url'   =>  '#',
-                            'icon_color' => 'red',
-                        ],
-                        [
-                            'text'       => 'Altas',
-                            'url'   =>  '#',
-                            'icon_color' => 'yellow',
-                        ],
-                        [
-                            'text'       => 'Medias',
-                            'url'   =>  '#',
-                            'icon_color' => 'light-blue',
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'Por Plataformas',
-                    'icon' => 'cubes',
-                    'icon_color' => 'white',
-                    'url' => '#',
-                    'active' => ['#'],
-                ],
-                [
-                    'text' => 'Por Activos',
-                    'icon' => 'server',
-                    'icon_color' => 'white',
-                    'url' => '#',
-                    'active' => ['#'],
-                ],                
-            ],
+            'url'     => 'ocurrencias',
+            'active' => ['ocurrencias*'],
         ],
+        [
+            'text' => 'Por Plataformas',
+            'icon' => 'cubes',
+            'icon_color' => 'green',
+            'url' => '#',
+            'active' => ['#'],
+        ],
+        [
+            'text' => 'Por Activos',
+            'icon' => 'server',
+            'icon_color' => 'yellow',
+            'url' => '#',
+            'active' => ['#'],
+        ],                
         'ADMINISTRACION',
         [
             'text'  =>  'Plataformas',
@@ -172,7 +141,7 @@ return [
         [
             'text'  =>  'Activos',
             'icon'  =>  'server',
-            'icon_color' => 'green',
+            'icon_color' => 'yellow',
             'url'     => 'activos',
             'active' => ['activos*'],
         ],
@@ -181,7 +150,7 @@ return [
             'url'         => 'vulnerabilidades',
             'active'    =>  ['vulnerabilidades*'],
             'icon'        => 'exclamation-triangle',
-            'icon_color' => 'orange',
+            'icon_color' => 'red',
             #'label'       => 4,
             #'label_color' => 'success',
         ],

@@ -22,7 +22,7 @@
 		<th>@sortablelink('Responsable')</th>
 		<th>@sortablelink('activos')</th>
 		<th>@sortablelink('vulnerabilidades')</th>
-    <th>Accion</th>
+    <th width="120px">Accion</th>
 	</thead>
 	<tbody>
 	@foreach($plataformas as $plataforma)
