@@ -190,7 +190,9 @@ class VulnerabilidadController extends Controller
                             $ultima_deteccion = Carbon::createFromFormat('M j, Y H:i:s *', $value->last_observed,'America/Argentina/Buenos_Aires');
                         }
                         catch(\Exception $e){
-                            
+                        	$array_msg = ['error' => '<p><strong>Error en formato de archivo</p>'];
+                		return redirect()->route('vulnerabilidades.import')
+                        		->with($array_msg);    
                         }
 
                         $vulnerabilidad = Vulnerabilidad::firstOrCreate(
