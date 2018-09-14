@@ -60,7 +60,7 @@
                <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li style="padding: 5px;">
+                        <li style="padding: 10px;">
                             @yield('searchbar')
                         </li>
                         <!-- Authentication Links -->

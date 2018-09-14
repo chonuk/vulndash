@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'red',
+    'skin' => 'green',
 
     /*
     |--------------------------------------------------------------------------
@@ -114,28 +114,28 @@ return [
             'icon' => 'exclamation-circle',
             'icon_color' => 'red',
             'url' => 'ocurrencias',
-            'active' => ['ocurrencias/*'],
+            'active' => ['ocurrencias','ocurrencias?*'],
         ],               
         [
             'text'  =>  'Por Vulnerabilidad',
             'icon'  =>  'exclamation-triangle',
             'icon_color' => 'red',
-            'url'     => 'ocurrencias/vulnerabilidad',
-            'active' => ['ocurrencias/vulnerabilidad/*'],
+            'url'     => 'ocurrencias/vulnerabilidades',
+            'active' => ['ocurrencias/vulnerabilidades*'],
         ],
         [
             'text' => 'Por Plataformas',
             'icon' => 'cubes',
             'icon_color' => 'green',
-            'url' => '#',
-            'active' => ['#'],
+            'url'     => 'ocurrencias/plataformas',
+            'active' => ['ocurrencias/plataformas*'],
         ],
         [
             'text' => 'Por Activos',
             'icon' => 'server',
             'icon_color' => 'yellow',
-            'url' => '#',
-            'active' => ['#'],
+            'url'     => 'ocurrencias/activos',
+            'active' => ['ocurrencias/activos*'],
         ],   
         'ADMINISTRACION',
         [

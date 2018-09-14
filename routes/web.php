@@ -15,7 +15,7 @@ Route::get('/', 'HomeController@index')->name('home')->middleware('auth');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Ruta de Visualizacion general
-Route::resource('ocurrencias/vulnerabilidad','OcurrenciaController@vulnerabilidad')->middleware('auth');
+Route::get('ocurrencias/{grupo}','OcurrenciaController@listar')->middleware('auth')->where('grupo', 'activos|plataformas|vulnerabilidades');
 Route::resource('ocurrencias','OcurrenciaController')->middleware('auth');
 
 // Rutas de administracion
